@@ -1,0 +1,12 @@
+# meta
+.vscode/
+__pycache__/
+
+# dataset
+data/
+
+# logs
+log/
+
+# generated scripts
+train_*.cmd

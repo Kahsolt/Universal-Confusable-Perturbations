@@ -1,0 +1,103 @@
+<!DOCTYPE>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width">
+  <title>Show Universal Confusable Pertubations</title>
+  <link rel="stylesheet" href="w3.css">
+  <style>
+    //table, th, td { border: 1px solid black; }
+  </style>
+</head>
+<body>
+<div class="w3-bar w3-blue">
+<span class="w3-bar-item w3-large"> resnet18_imagenet-svhn </span>
+<span class="w3-bar-item"> | </span>
+<button class="w3-bar-item w3-button w3-large" onclick="openTable('pgd')">pgd</button>
+<button class="w3-bar-item w3-button w3-large" onclick="openTable('mifgsm')">mifgsm</button>
+<button class="w3-bar-item w3-button w3-large" onclick="openTable('pgdl2')">pgdl2</button>
+</div>
+<div class="w3-container w3-sand">
+<table id="pgd" class="w3-table method" style="display:block"><tr>
+  <td><div class="w3-container w3-hover-border-red w3-center"><img class="w3-image" src="img/resnet18_imagenet-svhn_pgd_e1e-1_a1e-2.png"></img><p>pgd_e1e-1_a1e-2</p></div></td>
+  <td><div class="w3-container w3-hover-border-red w3-center"><img class="w3-image" src="img/resnet18_imagenet-svhn_pgd_e1e-1_a5e-3.png"></img><p>pgd_e1e-1_a5e-3</p></div></td>
+  <td><div class="w3-container w3-hover-border-red w3-center"><img class="w3-image" src="img/resnet18_imagenet-svhn_pgd_e1e-1_a3e-3.png"></img><p>pgd_e1e-1_a3e-3</p></div></td>
+  <td><div class="w3-container w3-hover-border-red w3-center"><img class="w3-image" src="img/resnet18_imagenet-svhn_pgd_e1e-1_a1e-3.png"></img><p>pgd_e1e-1_a1e-3</p></div></td>
+</tr>
+<tr>
+  <td><div class="w3-container w3-hover-border-red w3-center"><img class="w3-image" src="img/resnet18_imagenet-svhn_pgd_e5e-2_a1e-2.png"></img><p>pgd_e5e-2_a1e-2</p></div></td>
+  <td><div class="w3-container w3-hover-border-red w3-center"><img class="w3-image" src="img/resnet18_imagenet-svhn_pgd_e5e-2_a5e-3.png"></img><p>pgd_e5e-2_a5e-3</p></div></td>
+  <td><div class="w3-container w3-hover-border-red w3-center"><img class="w3-image" src="img/resnet18_imagenet-svhn_pgd_e5e-2_a3e-3.png"></img><p>pgd_e5e-2_a3e-3</p></div></td>
+  <td><div class="w3-container w3-hover-border-red w3-center"><img class="w3-image" src="img/resnet18_imagenet-svhn_pgd_e5e-2_a1e-3.png"></img><p>pgd_e5e-2_a1e-3</p></div></td>
+</tr>
+<tr>
+  <td><div class="w3-container w3-hover-border-red w3-center"><img class="w3-image" src="img/resnet18_imagenet-svhn_pgd_e3e-2_a1e-2.png"></img><p>pgd_e3e-2_a1e-2</p></div></td>
+  <td><div class="w3-container w3-hover-border-red w3-center"><img class="w3-image" src="img/resnet18_imagenet-svhn_pgd_e3e-2_a5e-3.png"></img><p>pgd_e3e-2_a5e-3</p></div></td>
+  <td><div class="w3-container w3-hover-border-red w3-center"><img class="w3-image" src="img/resnet18_imagenet-svhn_pgd_e3e-2_a3e-3.png"></img><p>pgd_e3e-2_a3e-3</p></div></td>
+  <td><div class="w3-container w3-hover-border-red w3-center"><img class="w3-image" src="img/resnet18_imagenet-svhn_pgd_e3e-2_a1e-3.png"></img><p>pgd_e3e-2_a1e-3</p></div></td>
+</tr>
+<tr>
+  <td><div class="w3-container w3-hover-border-red w3-center"><img class="w3-image" src="img/resnet18_imagenet-svhn_pgd_e1e-2_a1e-2.png"></img><p>pgd_e1e-2_a1e-2</p></div></td>
+  <td><div class="w3-container w3-hover-border-red w3-center"><img class="w3-image" src="img/resnet18_imagenet-svhn_pgd_e1e-2_a5e-3.png"></img><p>pgd_e1e-2_a5e-3</p></div></td>
+  <td><div class="w3-container w3-hover-border-red w3-center"><img class="w3-image" src="img/resnet18_imagenet-svhn_pgd_e1e-2_a3e-3.png"></img><p>pgd_e1e-2_a3e-3</p></div></td>
+  <td><div class="w3-container w3-hover-border-red w3-center"><img class="w3-image" src="img/resnet18_imagenet-svhn_pgd_e1e-2_a1e-3.png"></img><p>pgd_e1e-2_a1e-3</p></div></td>
+</tr></table>
+<table id="mifgsm" class="w3-table method" style="display:none"><tr>
+  <td><div class="w3-container w3-hover-border-red w3-center"><img class="w3-image" src="img/resnet18_imagenet-svhn_mifgsm_e1e-1_a1e-2.png"></img><p>mifgsm_e1e-1_a1e-2</p></div></td>
+  <td><div class="w3-container w3-hover-border-red w3-center"><img class="w3-image" src="img/resnet18_imagenet-svhn_mifgsm_e1e-1_a5e-3.png"></img><p>mifgsm_e1e-1_a5e-3</p></div></td>
+  <td><div class="w3-container w3-hover-border-red w3-center"><img class="w3-image" src="img/resnet18_imagenet-svhn_mifgsm_e1e-1_a3e-3.png"></img><p>mifgsm_e1e-1_a3e-3</p></div></td>
+  <td><div class="w3-container w3-hover-border-red w3-center"><img class="w3-image" src="img/resnet18_imagenet-svhn_mifgsm_e1e-1_a1e-3.png"></img><p>mifgsm_e1e-1_a1e-3</p></div></td>
+</tr>
+<tr>
+  <td><div class="w3-container w3-hover-border-red w3-center"><img class="w3-image" src="img/resnet18_imagenet-svhn_mifgsm_e5e-2_a1e-2.png"></img><p>mifgsm_e5e-2_a1e-2</p></div></td>
+  <td><div class="w3-container w3-hover-border-red w3-center"><img class="w3-image" src="img/resnet18_imagenet-svhn_mifgsm_e5e-2_a5e-3.png"></img><p>mifgsm_e5e-2_a5e-3</p></div></td>
+  <td><div class="w3-container w3-hover-border-red w3-center"><img class="w3-image" src="img/resnet18_imagenet-svhn_mifgsm_e5e-2_a3e-3.png"></img><p>mifgsm_e5e-2_a3e-3</p></div></td>
+  <td><div class="w3-container w3-hover-border-red w3-center"><img class="w3-image" src="img/resnet18_imagenet-svhn_mifgsm_e5e-2_a1e-3.png"></img><p>mifgsm_e5e-2_a1e-3</p></div></td>
+</tr>
+<tr>
+  <td><div class="w3-container w3-hover-border-red w3-center"><img class="w3-image" src="img/resnet18_imagenet-svhn_mifgsm_e3e-2_a1e-2.png"></img><p>mifgsm_e3e-2_a1e-2</p></div></td>
+  <td><div class="w3-container w3-hover-border-red w3-center"><img class="w3-image" src="img/resnet18_imagenet-svhn_mifgsm_e3e-2_a5e-3.png"></img><p>mifgsm_e3e-2_a5e-3</p></div></td>
+  <td><div class="w3-container w3-hover-border-red w3-center"><img class="w3-image" src="img/resnet18_imagenet-svhn_mifgsm_e3e-2_a3e-3.png"></img><p>mifgsm_e3e-2_a3e-3</p></div></td>
+  <td><div class="w3-container w3-hover-border-red w3-center"><img class="w3-image" src="img/resnet18_imagenet-svhn_mifgsm_e3e-2_a1e-3.png"></img><p>mifgsm_e3e-2_a1e-3</p></div></td>
+</tr>
+<tr>
+  <td><div class="w3-container w3-hover-border-red w3-center"><img class="w3-image" src="img/resnet18_imagenet-svhn_mifgsm_e1e-2_a1e-2.png"></img><p>mifgsm_e1e-2_a1e-2</p></div></td>
+  <td><div class="w3-container w3-hover-border-red w3-center"><img class="w3-image" src="img/resnet18_imagenet-svhn_mifgsm_e1e-2_a5e-3.png"></img><p>mifgsm_e1e-2_a5e-3</p></div></td>
+  <td><div class="w3-container w3-hover-border-red w3-center"><img class="w3-image" src="img/resnet18_imagenet-svhn_mifgsm_e1e-2_a3e-3.png"></img><p>mifgsm_e1e-2_a3e-3</p></div></td>
+  <td><div class="w3-container w3-hover-border-red w3-center"><img class="w3-image" src="img/resnet18_imagenet-svhn_mifgsm_e1e-2_a1e-3.png"></img><p>mifgsm_e1e-2_a1e-3</p></div></td>
+</tr></table>
+<table id="pgdl2" class="w3-table method" style="display:none"><tr>
+  <td><div class="w3-container w3-hover-border-red w3-center"><img class="w3-image" src="img/resnet18_imagenet-svhn_pgdl2_e1e-1_a1e-2.png"></img><p>pgdl2_e1e-1_a1e-2</p></div></td>
+  <td><div class="w3-container w3-hover-border-red w3-center"><img class="w3-image" src="img/resnet18_imagenet-svhn_pgdl2_e1e-1_a5e-3.png"></img><p>pgdl2_e1e-1_a5e-3</p></div></td>
+  <td><div class="w3-container w3-hover-border-red w3-center"><img class="w3-image" src="img/resnet18_imagenet-svhn_pgdl2_e1e-1_a3e-3.png"></img><p>pgdl2_e1e-1_a3e-3</p></div></td>
+  <td><div class="w3-container w3-hover-border-red w3-center"><img class="w3-image" src="img/resnet18_imagenet-svhn_pgdl2_e1e-1_a1e-3.png"></img><p>pgdl2_e1e-1_a1e-3</p></div></td>
+</tr>
+<tr>
+  <td><div class="w3-container w3-hover-border-red w3-center"><img class="w3-image" src="img/resnet18_imagenet-svhn_pgdl2_e5e-2_a1e-2.png"></img><p>pgdl2_e5e-2_a1e-2</p></div></td>
+  <td><div class="w3-container w3-hover-border-red w3-center"><img class="w3-image" src="img/resnet18_imagenet-svhn_pgdl2_e5e-2_a5e-3.png"></img><p>pgdl2_e5e-2_a5e-3</p></div></td>
+  <td><div class="w3-container w3-hover-border-red w3-center"><img class="w3-image" src="img/resnet18_imagenet-svhn_pgdl2_e5e-2_a3e-3.png"></img><p>pgdl2_e5e-2_a3e-3</p></div></td>
+  <td><div class="w3-container w3-hover-border-red w3-center"><img class="w3-image" src="img/resnet18_imagenet-svhn_pgdl2_e5e-2_a1e-3.png"></img><p>pgdl2_e5e-2_a1e-3</p></div></td>
+</tr>
+<tr>
+  <td><div class="w3-container w3-hover-border-red w3-center"><img class="w3-image" src="img/resnet18_imagenet-svhn_pgdl2_e3e-2_a1e-2.png"></img><p>pgdl2_e3e-2_a1e-2</p></div></td>
+  <td><div class="w3-container w3-hover-border-red w3-center"><img class="w3-image" src="img/resnet18_imagenet-svhn_pgdl2_e3e-2_a5e-3.png"></img><p>pgdl2_e3e-2_a5e-3</p></div></td>
+  <td><div class="w3-container w3-hover-border-red w3-center"><img class="w3-image" src="img/resnet18_imagenet-svhn_pgdl2_e3e-2_a3e-3.png"></img><p>pgdl2_e3e-2_a3e-3</p></div></td>
+  <td><div class="w3-container w3-hover-border-red w3-center"><img class="w3-image" src="img/resnet18_imagenet-svhn_pgdl2_e3e-2_a1e-3.png"></img><p>pgdl2_e3e-2_a1e-3</p></div></td>
+</tr>
+<tr>
+  <td><div class="w3-container w3-hover-border-red w3-center"><img class="w3-image" src="img/resnet18_imagenet-svhn_pgdl2_e1e-2_a1e-2.png"></img><p>pgdl2_e1e-2_a1e-2</p></div></td>
+  <td><div class="w3-container w3-hover-border-red w3-center"><img class="w3-image" src="img/resnet18_imagenet-svhn_pgdl2_e1e-2_a5e-3.png"></img><p>pgdl2_e1e-2_a5e-3</p></div></td>
+  <td><div class="w3-container w3-hover-border-red w3-center"><img class="w3-image" src="img/resnet18_imagenet-svhn_pgdl2_e1e-2_a3e-3.png"></img><p>pgdl2_e1e-2_a3e-3</p></div></td>
+  <td><div class="w3-container w3-hover-border-red w3-center"><img class="w3-image" src="img/resnet18_imagenet-svhn_pgdl2_e1e-2_a1e-3.png"></img><p>pgdl2_e1e-2_a1e-3</p></div></td>
+</tr></table>
+</div>
+<script>
+function openTable(method) {
+  let x = document.getElementsByClassName("method");
+  for (let i = 0; i < x.length; i++)
+    x[i].style.display = "none";
+  document.getElementById(method).style.display = "block";
+}
+</script>
+</body>
+</html>
