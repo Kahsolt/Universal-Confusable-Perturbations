@@ -143,6 +143,12 @@ python test.py -M resnet18 -D mnist --load
 │── ...
 ```
 
+#### troubleshoot
+
+Q: It seems that loss is very high, and not decrease.
+A: Don't worry, because Cross-Entropy Loss on a uniform distribution is naturally high, theorical lower bound for a uniform distribution lengthed `1000` like ImageNet is the constant `6.9078`, hence loss `~= 7.1` is ok.
+
+
 #### references
 
 - Universal adversarial perturbations: [https://arxiv.org/abs/1610.08401](https://arxiv.org/abs/1610.08401)

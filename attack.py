@@ -98,7 +98,6 @@ def attack(args):
       losses.update(loss)
 
       steps += 1
-      if steps >= args.steps: break
 
       for k in dir(args):
         if k.endswith('_interval'):
@@ -120,7 +119,7 @@ def attack(args):
       if steps % args.save_interval == 0:
         save_fp = os.path.join(args.log_path, args.name, f'{args.name}-{args.atk_dataset}_{atk_suffix}.npy')
         np.save(save_fp, ucp_npy)
-      
+
 
 if __name__ == '__main__':
   parser = ArgumentParser()
@@ -132,8 +131,8 @@ if __name__ == '__main__':
   parser.add_argument('--eps', type=float, default=0.03, help='attack param eps, total pertubation limit')
   parser.add_argument('--alpha', type=float, default=0.001, help='attack param alpha, stepwise pertubation limit ~= learning rate')
   parser.add_argument('--alpha_decay', default=None, help='enable alpha_decay mechanism if set, e.g.: 2e-5')
-  parser.add_argument('--steps', type=int, default=3000, help='attack iteration steps on whole dataset')
-  parser.add_argument('--steps_per_batch', type=int, default=40, help='attack iteration steps on one batch')
+  parser.add_argument('--steps', type=int, default=2000, help='attack iteration steps on whole dataset, e.g.: 3000')
+  parser.add_argument('--steps_per_batch', type=int, default=20, help='attack iteration steps on one batch, e.g.: 40')
 
   parser.add_argument('-B', '--batch_size', type=int, default=128)
   parser.add_argument('-J', '--n_worker', type=int, default=0)

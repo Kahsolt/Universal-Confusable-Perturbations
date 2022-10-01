@@ -2,12 +2,21 @@
 # Author: Armit
 # Create Time: 2022/09/30 
 
+# according to file 'attack_resnet18_imagenet-svhn_gridsearch.cmd'
+
 import os
 
-from mk_train_script import EPS, ALPHA
 from attack import ATK_METHODS
 from util import float_to_str 
 
+EPS_Linf = [ 0.1, 0.05, 0.03, 0.01 ]
+EPS_L2 = [ 3, 1, 0.5, 0.3 ]
+EPS = {
+  'pgd'   : EPS_Linf,
+  'mifgsm': EPS_Linf,
+  'pgdl2' : EPS_L2,
+}
+ALPHA = [ 0.01, 0.005, 0.001 ]
 
 img_dp = 'img'
 html_fn = 'index.html'
@@ -62,17 +71,17 @@ function openTable(method) {
     buttons.append(button)
 
     trs = []
-    for eps in EPS:
+    for eps in EPS[method]:
       tds = []
 
       for alpha in ALPHA:
         suffix = f'{method}_e{float_to_str(eps)}_a{(float_to_str(alpha))}'
         fp = f'{img_dp}/{name}_{suffix}.png'
-
+        subtitle = f'{method} eps={eps} alpha={alpha}'
         if os.path.exists(fp):
-          tds.append(mk_td(mk_card(fp, suffix)))
+          tds.append(mk_td(mk_card(fp, subtitle)))
         else:
-          tds.append(mk_td(mk_p(f'missing {suffix}')))
+          tds.append(mk_td(mk_p(f'missing {fp}')))
 
       trs.append(mk_tr('\n'.join(tds)))
 
