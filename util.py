@@ -99,10 +99,40 @@ def ucp_rotate(ucp:torch.Tensor, angle=90) -> torch.Tensor:
   
   return ucp.rot90(k=angle//90,  dims=(1, 2))
 
+def ucp_stats(ucp:np.ndarray) -> dict:
+  return {
+    'min':  ucp.min(),
+    'max':  ucp.max(),
+    'rng':  ucp.max() - ucp.min(),
+    'avg':  ucp.mean(),
+    'var':  ucp.var(),
+    'L0':   (np.abs(ucp) > 0).mean(),
+    'L1':   np.abs(ucp).mean(),
+    'L2':   np.linalg.norm(ucp),
+    'Linf': np.abs(ucp).max(),
+  }
+
+
+# load setting: 'resnet18_imagenet'
+def load_name(model='resnet18', train_dataset='imagenet') -> str:
+  return f'{model}_{train_dataset}'
+
+# filename base: 'resnet18_imagenet-svhn_pgd_e3e-2_a1e-3'
+def ucp_name(model='resnet18', train_dataset='imagenet', atk_dataset='svhn', method='pgd', eps=0.03, alpha=0.001, alpha_to=None) -> str:
+  return f'{ucp_prefix(model, train_dataset, atk_dataset)}{ucp_suffix(method, eps, alpha, alpha_to)}'
+
+# attack setting: 'resnet18_imagenet-svhn'
+def ucp_prefix(model='resnet18', train_dataset='imagenet', atk_dataset='svhn') -> str:
+  return f'{load_name(model, train_dataset)}-{atk_dataset}'
+
+# attack params: '_pgd_e3e-2_a1e-3'
+def ucp_suffix(method='pgd', eps=0.03, alpha=0.001, alpha_to=None) -> str:  
+  return f'_{method}_e{float_to_str(eps)}_a{(float_to_str(alpha))}' + (f"_to{(float_to_str(alpha_to))}" if alpha_to is not None else "")
+
 
 def float_to_str(x:str, n_prec:int=3) -> str:
   # integer
-  if int(x) == x: return str(x)
+  if int(x) == x: return str(int(x))
   
   # float
   sci = f'{x:e}'

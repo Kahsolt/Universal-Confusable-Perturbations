@@ -26,7 +26,7 @@ MODELS = [
 #  'densenet161',
 #  'densenet169',
 #  'densenet201',
-  
+
 #  'efficientnet_b0',
 #  'efficientnet_b1',
 #  'efficientnet_b2',

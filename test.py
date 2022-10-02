@@ -3,13 +3,26 @@
 # Create Time: 2022/09/27 
 
 import os
+import pickle as pkl
 from argparse import ArgumentParser
 
 import numpy as np
-
 from model import *
 from data import *
 from util import *
+
+
+def log(stats: dict, path: str, name:str, value: float):
+  def set_dval():
+    node = stats
+    for seg in path.split('/'):
+      if seg not in node:
+        node[seg] = { }
+      node = node[seg]
+    node[name] = value
+  
+  set_dval()
+  print(f'   {name}: {value:.3%}')
 
 
 def test(args):
@@ -27,6 +40,17 @@ def test(args):
     args.name = f'{args.model}_{args.train_dataset}'
     args.ckpt_fp = None
 
+  ''' Stats '''
+  # load acc/pcr records
+  stats_fp = os.path.join(args.log_path, 'stats.pkl')
+  if os.path.exists(stats_fp):
+    with open(stats_fp, 'rb') as fh:
+      stats = pkl.load(fh)
+  else:
+    # { 'acc|pcr': { '<ucp_name>': { '<resizer>': { '<atk_dataset>': { '<name>': float } } } } }
+    # { 'clean': { '<atk_dataset>': { '<name>': float } } }
+    stats = { }
+  
   ''' Model '''
   model = get_model(args.model, ckpt_fp=args.ckpt_fp).to(device)
   model.eval()
@@ -40,33 +64,38 @@ def test(args):
     if chk_dataset_compatible(args.train_dataset, args.atk_dataset):
       print(f'[Accuracy]')
       acc = test_acc(model, dataloader)
-      print(f'   clean: {acc:.3%}')
+      log(stats, f'clean/{args.atk_dataset}', 'clean', acc)
       for mag in [1e-3, 1e-2, 1e-1]:
-        ret = test_acc(model, dataloader, noise=mag)
-        print(f'   clean-noise({float_to_str(mag)}): {ret:.3%}')
+        acc = test_acc(model, dataloader, noise=mag)
+        log(stats, f'clean/{args.atk_dataset}', f'clean-noise({float_to_str(mag)})', acc)
     else:
       print('atk_dataset is not compatible is with train_dataset')
   
   # Try attacked accuracy
   if args.ucp:
+    ucp_name = os.path.splitext(os.path.basename(args.ucp))[0]
     ucp = torch.from_numpy(np.load(args.ucp)).to(device)
 
     # Try testing remnet accuracy (:= 1 - misclf rate) after adding UCP
     if chk_dataset_compatible(args.train_dataset, args.atk_dataset):
       acc = test_acc(model, dataloader, ucp, resizer=args.resizer)
-      print(f'   ucp: {acc:.3%}')
+      log(stats, f'acc/{ucp_name}/{args.resizer}/{args.atk_dataset}', 'ucp', acc)
 
       if args.ex:
-        test_ucp_ex(ucp, model, dataloader, test_fn=test_acc, resizer=args.resizer)
+        test_ucp_ex(ucp, model, dataloader, test_fn=test_acc, resizer=args.resizer, stats=stats, ucp_name=ucp_name)
       
     # Try testing predction changing rate after adding UCP
     if True:
       print(f'[Pred Change Rate]')
       pcr = test_pcr(model, dataloader, ucp, resizer=args.resizer)
-      print(f'   ucp: {pcr:.3%}')
+      log(stats, f'pcr/{ucp_name}/{args.resizer}/{args.atk_dataset}', 'ucp', pcr)
 
       if args.ex:
-        test_ucp_ex(ucp, model, dataloader, test_fn=test_pcr, resizer=args.resizer)
+        test_ucp_ex(ucp, model, dataloader, test_fn=test_pcr, resizer=args.resizer, stats=stats, ucp_name=ucp_name)
+
+  # save acc/pcr records
+  with open(stats_fp, 'wb') as fh:
+    pkl.dump(stats, fh)
 
 
 def test_acc(model, dataloader, ucp=None, resizer='tile', noise=None) -> float:
@@ -92,7 +121,7 @@ def test_acc(model, dataloader, ucp=None, resizer='tile', noise=None) -> float:
       total += len(pred)
       correct += (pred == Y).sum()
   
-  return correct / total
+  return (correct / total).item()
 
 
 def test_pcr(model, dataloader, ucp, resizer='tile') -> float:
@@ -116,33 +145,37 @@ def test_pcr(model, dataloader, ucp, resizer='tile') -> float:
       total += len(pred1)
       changed += (pred1 != pred2).sum()
   
-  return changed / total
+  return (changed / total).item()
 
 
-def test_ucp_ex(ucp, model, dataloader, test_fn, resizer='tile'):
+def test_ucp_ex(ucp, model, dataloader, test_fn, resizer='tile', **kwargs):
+  metric = test_fn.__name__.split('_')[-1]
+  stats = kwargs.get('stats', { })
+  ucp_name = kwargs.get('ucp_name', 'anonymous')
+
   for factor in [-2, -0.5, 0.5, 2]:
     ucp_v = ucp * factor
     ret = test_fn(model, dataloader, ucp_v, resizer=resizer)
-    print(f'   ucp(x{factor}): {ret:.3%}')
+    log(stats, f'{metric}/{ucp_name}/{args.resizer}/{args.atk_dataset}', f'ucp(x{factor})', ret)
   
   ucp_v = ucp_norm(ucp, norm=True)
   ret = test_fn(model, dataloader, ucp_v, resizer=resizer)
-  print(f'   ucp-norm: {ret:.3%}')
+  log(stats, f'{metric}/{ucp_name}/{args.resizer}/{args.atk_dataset}', 'ucp-norm', ret)
 
   for mag in [1e-3, 1e-2, 1e-1]:
     ucp_v = ucp_noise(ucp, mag=mag)
     ret = test_fn(model, dataloader, ucp_v, resizer=resizer)
-    print(f'   ucp-noise({float_to_str(mag)}): {ret:.3%}')
+    log(stats, f'{metric}/{ucp_name}/{args.resizer}/{args.atk_dataset}', f'ucp-noise({float_to_str(mag)})', ret)
 
   for mode in ['vertical', 'horizontal']:
     ucp_v = ucp_flip(ucp, mode)
     ret = test_fn(model, dataloader, ucp_v, resizer=resizer)
-    print(f'   ucp-clip({mode}): {ret:.3%}')
+    log(stats, f'{metric}/{ucp_name}/{args.resizer}/{args.atk_dataset}', f'ucp-flip({mode})', ret)
   
   for angle in [90, 180, 270]:
     ucp_v = ucp_rotate(ucp, angle)
     ret = test_fn(model, dataloader, ucp_v, resizer=resizer)
-    print(f'   ucp-rotate({angle}): {ret:.3%}')
+    log(stats, f'{metric}/{ucp_name}/{args.resizer}/{args.atk_dataset}', f'ucp-rotate({angle})', ret)
 
 
 if __name__ == '__main__':
@@ -162,6 +195,8 @@ if __name__ == '__main__':
   args = parser.parse_args()
 
   print(f'>> testing on dataset "{args.atk_dataset}" of split "{args.split}"')
-  print(f'>> using resizer "{args.resizer}" in case of shape mismatch')
+  if args.ucp:
+    print(f'>> using ucp "{os.path.basename(args.ucp)}"')
+    print(f'>> using resizer "{args.resizer}" in case of shape mismatch')
 
   test(args)

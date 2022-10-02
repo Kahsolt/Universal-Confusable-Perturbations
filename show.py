@@ -11,19 +11,12 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 from data import get_dataloader, DATASETS
-from util import ucp_expand_batch, ucp_norm
+from util import ucp_expand_batch, ucp_norm, ucp_stats
 
 
 def print_stats(ucp:np.ndarray):
-  print('   min:',  ucp.min())
-  print('   max:',  ucp.max())
-  print('   rng:',  ucp.max() - ucp.min())
-  print('   avg:',  ucp.mean())
-  print('   var:',  ucp.var())
-  print('   L0:',   (np.abs(ucp) > 0).sum())
-  print('   L1:',   np.abs(ucp).mean())
-  print('   L2:',   np.linalg.norm(ucp))
-  print('   Linf:', np.abs(ucp).max())
+  for k, v in ucp_stats(ucp).items():
+    print(f'   {k}: {v}')
 
 
 def show(args):
@@ -96,7 +89,7 @@ if __name__ == '__main__':
   parser.add_argument('--resizer', default='tile', choices=['tile', 'interpolate'], help='resize UCP when shape mismatch')
   parser.add_argument('-D', '--dataset', default='imagenet-1k', choices=DATASETS, help='show when ucp is added onto a dataset')
 
-  parser.add_argument('--overwrite', action='store_true', help='force overwrite if exists when plt.save_fig(ucp)')
+  parser.add_argument('--overwrite', action='store_true', help='force overwrite existing <ucp>.png')
   parser.add_argument('--silent', action='store_true', help='only plt.save_fig(ucp), no plt.show()')
 
   parser.add_argument('--data_path', default='data', help='folder path to downloaded dataset')

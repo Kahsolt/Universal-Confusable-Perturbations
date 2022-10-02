@@ -5,19 +5,19 @@ python attack.py -M resnet18 -D svhn --method pgd --eps 0.03  --alpha 0.001
 
 @REM ablation on atk_method
 python attack.py -M resnet18 -D svhn --method mifgsm --eps 0.03 --alpha 0.001
-python attack.py -M resnet18 -D svhn --method pgdl2  --eps 1    --alpha 0.01 
+python attack.py -M resnet18 -D svhn --method pgdl2  --eps 1    --alpha 0.01
 
 @REM ablation on eps
 python attack.py -M resnet18 -D svhn --method pgd --eps 0.05 --alpha 0.001
 python attack.py -M resnet18 -D svhn --method pgd --eps 0.01 --alpha 0.001
 
 @REM albation on alhpa
-python attack.py -M resnet18 -D svhn --method pgd --eps 0.03 --alpha 0.0001 
+python attack.py -M resnet18 -D svhn --method pgd --eps 0.03 --alpha 0.0001
 python attack.py -M resnet18 -D svhn --method pgd --eps 0.03 --alpha 0.00001
 
 @REM alabtiom on alpha decay
-python attack.py -M resnet18 -D svhn --method pgd --eps 0.03 --alpha 0.001 --alpha_decay 1e-4
-python attack.py -M resnet18 -D svhn --method pgd --eps 0.03 --alpha 0.001 --alpha_decay 2e-5
+python attack.py -M resnet18 -D svhn --method pgd --eps 0.03 --alpha 0.001 --alpha_to 1e-4
+python attack.py -M resnet18 -D svhn --method pgd --eps 0.03 --alpha 0.001 --alpha_to 2e-5
 
 @REM ablation on model
 python attack.py -M resnet18           -D svhn --method pgd --eps 0.03 --alpha 0.001
@@ -34,6 +34,10 @@ python attack.py -M mobilenet_v3_large -D svhn --method pgd --eps 0.03 --alpha 0
 python attack.py -M regnet_y_400mf     -D svhn --method pgd --eps 0.03 --alpha 0.001
 python attack.py -M vit_b_16           -D svhn --method pgd --eps 0.03 --alpha 0.001
 python attack.py -M swin_t             -D svhn --method pgd --eps 0.03 --alpha 0.001
+
+EXIT /B
+@REM experiments below will cause overwrite!!
+@REM ignore currently...
 
 @REM albation on steps
 python attack.py -M resnet18 -D svhn --method pgd --eps 0.03 --alpha 0.001 --steps 1000 --steps_per_batch 20

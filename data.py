@@ -84,6 +84,7 @@ class ImageNet_1k(Dataset):
 
 
 def chk_dataset_compatible(dataset1:str, dataset2:str):
+  if dataset1 == dataset2: return True
   if {dataset1, dataset2} == {'imagenet-1k', 'imagenet'}: return True
   return False
 

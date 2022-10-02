@@ -3,88 +3,1502 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width">
-  <title>Show Universal Confusable Pertubations</title>
+  <title>Universal Confusable Pertubations Demo</title>
   <link rel="stylesheet" href="w3.css">
   <style>
-    //table, th, td { border: 1px solid black; }
+    /* table, th, td { border: 1px solid black; } */
   </style>
 </head>
-<body>
+<body class="w3-sand">
+<!-- menu -->
 <div class="w3-bar w3-blue">
 <span class="w3-bar-item w3-large"> resnet18_imagenet-svhn </span>
 <span class="w3-bar-item"> | </span>
 <button class="w3-bar-item w3-button w3-large" onclick="openTable('pgd')">pgd</button>
 <button class="w3-bar-item w3-button w3-large" onclick="openTable('mifgsm')">mifgsm</button>
 <button class="w3-bar-item w3-button w3-large" onclick="openTable('pgdl2')">pgdl2</button>
+<span class="w3-bar-item"> | </span>
+<button class="w3-bar-item w3-button w3-large" onclick="openTable('alpha-decay')">alpha-decay</button>
+<button class="w3-bar-item w3-button w3-large" onclick="openTable('models')">models</button>  <!-- buttons or span-splits -->
 </div>
-<div class="w3-container w3-sand">
-<table id="pgd" class="w3-table method" style="display:block"><tr>
-  <td><p>missing img/resnet18_imagenet-svhn_pgd_e1e-1_a1e-2.png</p></td>
-  <td><p>missing img/resnet18_imagenet-svhn_pgd_e1e-1_a5e-3.png</p></td>
-  <td><p>missing img/resnet18_imagenet-svhn_pgd_e1e-1_a1e-3.png</p></td>
-</tr>
+
+<!-- content -->
+<div class="w3-container">
+<!-- tables or divs -->
+<table id="pgd" class="w3-table tabpage" style="display:block">
 <tr>
-  <td><p>missing img/resnet18_imagenet-svhn_pgd_e5e-2_a1e-2.png</p></td>
-  <td><p>missing img/resnet18_imagenet-svhn_pgd_e5e-2_a5e-3.png</p></td>
-  <td><p>missing img/resnet18_imagenet-svhn_pgd_e5e-2_a1e-3.png</p></td>
-</tr>
-<tr>
-  <td><p>missing img/resnet18_imagenet-svhn_pgd_e3e-2_a1e-2.png</p></td>
-  <td><p>missing img/resnet18_imagenet-svhn_pgd_e3e-2_a5e-3.png</p></td>
-  <td><p>missing img/resnet18_imagenet-svhn_pgd_e3e-2_a1e-3.png</p></td>
-</tr>
-<tr>
-  <td><p>missing img/resnet18_imagenet-svhn_pgd_e1e-2_a1e-2.png</p></td>
-  <td><p>missing img/resnet18_imagenet-svhn_pgd_e1e-2_a5e-3.png</p></td>
-  <td><p>missing img/resnet18_imagenet-svhn_pgd_e1e-2_a1e-3.png</p></td>
-</tr></table>
-<table id="mifgsm" class="w3-table method" style="display:none"><tr>
-  <td><p>missing img/resnet18_imagenet-svhn_mifgsm_e1e-1_a1e-2.png</p></td>
-  <td><p>missing img/resnet18_imagenet-svhn_mifgsm_e1e-1_a5e-3.png</p></td>
-  <td><p>missing img/resnet18_imagenet-svhn_mifgsm_e1e-1_a1e-3.png</p></td>
-</tr>
-<tr>
-  <td><p>missing img/resnet18_imagenet-svhn_mifgsm_e5e-2_a1e-2.png</p></td>
-  <td><p>missing img/resnet18_imagenet-svhn_mifgsm_e5e-2_a5e-3.png</p></td>
-  <td><p>missing img/resnet18_imagenet-svhn_mifgsm_e5e-2_a1e-3.png</p></td>
-</tr>
-<tr>
-  <td><p>missing img/resnet18_imagenet-svhn_mifgsm_e3e-2_a1e-2.png</p></td>
-  <td><p>missing img/resnet18_imagenet-svhn_mifgsm_e3e-2_a5e-3.png</p></td>
-  <td><p>missing img/resnet18_imagenet-svhn_mifgsm_e3e-2_a1e-3.png</p></td>
-</tr>
-<tr>
-  <td><p>missing img/resnet18_imagenet-svhn_mifgsm_e1e-2_a1e-2.png</p></td>
-  <td><p>missing img/resnet18_imagenet-svhn_mifgsm_e1e-2_a5e-3.png</p></td>
-  <td><p>missing img/resnet18_imagenet-svhn_mifgsm_e1e-2_a1e-3.png</p></td>
-</tr></table>
-<table id="pgdl2" class="w3-table method" style="display:none"><tr>
-  <td><p>missing img/resnet18_imagenet-svhn_pgdl2_e3_a1e-2.png</p></td>
-  <td><p>missing img/resnet18_imagenet-svhn_pgdl2_e3_a5e-3.png</p></td>
-  <td><p>missing img/resnet18_imagenet-svhn_pgdl2_e3_a1e-3.png</p></td>
-</tr>
-<tr>
-  <td><p>missing img/resnet18_imagenet-svhn_pgdl2_e1_a1e-2.png</p></td>
-  <td><p>missing img/resnet18_imagenet-svhn_pgdl2_e1_a5e-3.png</p></td>
-  <td><p>missing img/resnet18_imagenet-svhn_pgdl2_e1_a1e-3.png</p></td>
-</tr>
-<tr>
-  <td><p>missing img/resnet18_imagenet-svhn_pgdl2_e5e-1_a1e-2.png</p></td>
-  <td><p>missing img/resnet18_imagenet-svhn_pgdl2_e5e-1_a5e-3.png</p></td>
-  <td><p>missing img/resnet18_imagenet-svhn_pgdl2_e5e-1_a1e-3.png</p></td>
-</tr>
-<tr>
-  <td><p>missing img/resnet18_imagenet-svhn_pgdl2_e3e-1_a1e-2.png</p></td>
-  <td><p>missing img/resnet18_imagenet-svhn_pgdl2_e3e-1_a5e-3.png</p></td>
-  <td><p>missing img/resnet18_imagenet-svhn_pgdl2_e3e-1_a1e-3.png</p></td>
-</tr></table>
+<td>
+<div class="w3-row" style="display:inline-block">
+<div class="w3-col s8 m8 l8">
+<div class="w3-container w3-center">
+<img class="w3-image" src="img\resnet18_imagenet-svhn_pgd_e1e-1_a1e-2.png"></img>
+<p>pgd eps=0.1 alpha=0.01</p>
 </div>
+</div>
+<div class="w3-col s4 m4 l4">
+<div class="w3-container">
+<span style="display:block">min: -0.0952283</span>
+<span style="display:block">max: 0.092161</span>
+<span style="display:block">rng: 0.187389</span>
+<span style="display:block">avg: 0.00135558</span>
+<span style="display:block">var: 0.00418558</span>
+<span style="display:block">L0: 1</span>
+<span style="display:block">L1: 0.0614289</span>
+<span style="display:block">L2: 3.58661</span>
+<span style="display:block">Linf: 0.0952283</span>
+</div>
+</div>
+</div>
+</td>
+<td>
+<div class="w3-row" style="display:inline-block">
+<div class="w3-col s8 m8 l8">
+<div class="w3-container w3-center">
+<img class="w3-image" src="img\resnet18_imagenet-svhn_pgd_e1e-1_a5e-3.png"></img>
+<p>pgd eps=0.1 alpha=0.005</p>
+</div>
+</div>
+<div class="w3-col s4 m4 l4">
+<div class="w3-container">
+<span style="display:block">min: -0.0953484</span>
+<span style="display:block">max: 0.0947945</span>
+<span style="display:block">rng: 0.190143</span>
+<span style="display:block">avg: -5.25254e-05</span>
+<span style="display:block">var: 0.00505197</span>
+<span style="display:block">L0: 1</span>
+<span style="display:block">L1: 0.0681997</span>
+<span style="display:block">L2: 3.9395</span>
+<span style="display:block">Linf: 0.0953484</span>
+</div>
+</div>
+</div>
+</td>
+<td>
+<div class="w3-row" style="display:inline-block">
+<div class="w3-col s8 m8 l8">
+<div class="w3-container w3-center">
+<img class="w3-image" src="img\resnet18_imagenet-svhn_pgd_e1e-1_a1e-3.png"></img>
+<p>pgd eps=0.1 alpha=0.001</p>
+</div>
+</div>
+<div class="w3-col s4 m4 l4">
+<div class="w3-container">
+<span style="display:block">min: -0.0978721</span>
+<span style="display:block">max: 0.0985759</span>
+<span style="display:block">rng: 0.196448</span>
+<span style="display:block">avg: -0.00754794</span>
+<span style="display:block">var: 0.00651291</span>
+<span style="display:block">L0: 1</span>
+<span style="display:block">L1: 0.0781791</span>
+<span style="display:block">L2: 4.49251</span>
+<span style="display:block">Linf: 0.0985759</span>
+</div>
+</div>
+</div>
+</td>
+<td>
+<div class="w3-row" style="display:inline-block">
+<div class="w3-col s8 m8 l8">
+<div class="w3-container w3-center">
+<img class="w3-image" src="img\resnet18_imagenet-svhn_pgd_e1e-1_a5e-4.png"></img>
+<p>pgd eps=0.1 alpha=0.0005</p>
+</div>
+</div>
+<div class="w3-col s4 m4 l4">
+<div class="w3-container">
+<span style="display:block">min: -0.0968968</span>
+<span style="display:block">max: 0.0977925</span>
+<span style="display:block">rng: 0.194689</span>
+<span style="display:block">avg: -0.00933727</span>
+<span style="display:block">var: 0.00571619</span>
+<span style="display:block">L0: 1</span>
+<span style="display:block">L1: 0.0715355</span>
+<span style="display:block">L2: 4.22232</span>
+<span style="display:block">Linf: 0.0977925</span>
+</div>
+</div>
+</div>
+</td>
+</tr>
+<tr>
+<td>
+<div class="w3-row" style="display:inline-block">
+<div class="w3-col s8 m8 l8">
+<div class="w3-container w3-center">
+<img class="w3-image" src="img\resnet18_imagenet-svhn_pgd_e5e-2_a1e-2.png"></img>
+<p>pgd eps=0.05 alpha=0.01</p>
+</div>
+</div>
+<div class="w3-col s4 m4 l4">
+<div class="w3-container">
+<span style="display:block">min: -0.0415551</span>
+<span style="display:block">max: 0.0417496</span>
+<span style="display:block">rng: 0.0833046</span>
+<span style="display:block">avg: -0.000213424</span>
+<span style="display:block">var: 0.000466061</span>
+<span style="display:block">L0: 1</span>
+<span style="display:block">L1: 0.0189984</span>
+<span style="display:block">L2: 1.19661</span>
+<span style="display:block">Linf: 0.0417496</span>
+</div>
+</div>
+</div>
+</td>
+<td>
+<div class="w3-row" style="display:inline-block">
+<div class="w3-col s8 m8 l8">
+<div class="w3-container w3-center">
+<img class="w3-image" src="img\resnet18_imagenet-svhn_pgd_e5e-2_a5e-3.png"></img>
+<p>pgd eps=0.05 alpha=0.005</p>
+</div>
+</div>
+<div class="w3-col s4 m4 l4">
+<div class="w3-container">
+<span style="display:block">min: -0.0463212</span>
+<span style="display:block">max: 0.0462533</span>
+<span style="display:block">rng: 0.0925746</span>
+<span style="display:block">avg: -0.000218264</span>
+<span style="display:block">var: 0.000900382</span>
+<span style="display:block">L0: 1</span>
+<span style="display:block">L1: 0.0278028</span>
+<span style="display:block">L2: 1.66317</span>
+<span style="display:block">Linf: 0.0463212</span>
+</div>
+</div>
+</div>
+</td>
+<td>
+<div class="w3-row" style="display:inline-block">
+<div class="w3-col s8 m8 l8">
+<div class="w3-container w3-center">
+<img class="w3-image" src="img\resnet18_imagenet-svhn_pgd_e5e-2_a1e-3.png"></img>
+<p>pgd eps=0.05 alpha=0.001</p>
+</div>
+</div>
+<div class="w3-col s4 m4 l4">
+<div class="w3-container">
+<span style="display:block">min: -0.0482295</span>
+<span style="display:block">max: 0.0480351</span>
+<span style="display:block">rng: 0.0962646</span>
+<span style="display:block">avg: 4.38645e-06</span>
+<span style="display:block">var: 0.00147195</span>
+<span style="display:block">L0: 1</span>
+<span style="display:block">L1: 0.0376477</span>
+<span style="display:block">L2: 2.12646</span>
+<span style="display:block">Linf: 0.0482295</span>
+</div>
+</div>
+</div>
+</td>
+<td>
+<div class="w3-row" style="display:inline-block">
+<div class="w3-col s8 m8 l8">
+<div class="w3-container w3-center">
+<img class="w3-image" src="img\resnet18_imagenet-svhn_pgd_e5e-2_a5e-4.png"></img>
+<p>pgd eps=0.05 alpha=0.0005</p>
+</div>
+</div>
+<div class="w3-col s4 m4 l4">
+<div class="w3-container">
+<span style="display:block">min: -0.0483198</span>
+<span style="display:block">max: 0.0475835</span>
+<span style="display:block">rng: 0.0959033</span>
+<span style="display:block">avg: -0.00052275</span>
+<span style="display:block">var: 0.00172778</span>
+<span style="display:block">L0: 1</span>
+<span style="display:block">L1: 0.0407231</span>
+<span style="display:block">L2: 2.30403</span>
+<span style="display:block">Linf: 0.0483198</span>
+</div>
+</div>
+</div>
+</td>
+</tr>
+<tr>
+<td>
+<div class="w3-row" style="display:inline-block">
+<div class="w3-col s8 m8 l8">
+<div class="w3-container w3-center">
+<img class="w3-image" src="img\resnet18_imagenet-svhn_pgd_e3e-2_a1e-2.png"></img>
+<p>pgd eps=0.03 alpha=0.01</p>
+</div>
+</div>
+<div class="w3-col s4 m4 l4">
+<div class="w3-container">
+<span style="display:block">min: -0.0245034</span>
+<span style="display:block">max: 0.0221178</span>
+<span style="display:block">rng: 0.0466211</span>
+<span style="display:block">avg: -0.00029931</span>
+<span style="display:block">var: 5.89519e-05</span>
+<span style="display:block">L0: 1</span>
+<span style="display:block">L1: 0.00611665</span>
+<span style="display:block">L2: 0.425882</span>
+<span style="display:block">Linf: 0.0245034</span>
+</div>
+</div>
+</div>
+</td>
+<td>
+<div class="w3-row" style="display:inline-block">
+<div class="w3-col s8 m8 l8">
+<div class="w3-container w3-center">
+<img class="w3-image" src="img\resnet18_imagenet-svhn_pgd_e3e-2_a5e-3.png"></img>
+<p>pgd eps=0.03 alpha=0.005</p>
+</div>
+</div>
+<div class="w3-col s4 m4 l4">
+<div class="w3-container">
+<span style="display:block">min: -0.0268348</span>
+<span style="display:block">max: 0.0268577</span>
+<span style="display:block">rng: 0.0536925</span>
+<span style="display:block">avg: -0.000409637</span>
+<span style="display:block">var: 0.000175578</span>
+<span style="display:block">L0: 1</span>
+<span style="display:block">L1: 0.0116671</span>
+<span style="display:block">L2: 0.734774</span>
+<span style="display:block">Linf: 0.0268577</span>
+</div>
+</div>
+</div>
+</td>
+<td>
+<div class="w3-row" style="display:inline-block">
+<div class="w3-col s8 m8 l8">
+<div class="w3-container w3-center">
+<img class="w3-image" src="img\resnet18_imagenet-svhn_pgd_e3e-2_a1e-3.png"></img>
+<p>pgd eps=0.03 alpha=0.001</p>
+</div>
+</div>
+<div class="w3-col s4 m4 l4">
+<div class="w3-container">
+<span style="display:block">min: -0.0278398</span>
+<span style="display:block">max: 0.0281895</span>
+<span style="display:block">rng: 0.0560293</span>
+<span style="display:block">avg: -0.000709972</span>
+<span style="display:block">var: 0.000416136</span>
+<span style="display:block">L0: 1</span>
+<span style="display:block">L1: 0.0199217</span>
+<span style="display:block">L2: 1.13133</span>
+<span style="display:block">Linf: 0.0281895</span>
+</div>
+</div>
+</div>
+</td>
+<td>
+<div class="w3-row" style="display:inline-block">
+<div class="w3-col s8 m8 l8">
+<div class="w3-container w3-center">
+<img class="w3-image" src="img\resnet18_imagenet-svhn_pgd_e3e-2_a5e-4.png"></img>
+<p>pgd eps=0.03 alpha=0.0005</p>
+</div>
+</div>
+<div class="w3-col s4 m4 l4">
+<div class="w3-container">
+<span style="display:block">min: -0.028612</span>
+<span style="display:block">max: 0.0281961</span>
+<span style="display:block">rng: 0.0568082</span>
+<span style="display:block">avg: -0.00104412</span>
+<span style="display:block">var: 0.000552117</span>
+<span style="display:block">L0: 1</span>
+<span style="display:block">L1: 0.0232543</span>
+<span style="display:block">L2: 1.30363</span>
+<span style="display:block">Linf: 0.028612</span>
+</div>
+</div>
+</div>
+</td>
+</tr>
+<tr>
+<td>
+<div class="w3-row" style="display:inline-block">
+<div class="w3-col s8 m8 l8">
+<div class="w3-container w3-center">
+<img class="w3-image" src="img\resnet18_imagenet-svhn_pgd_e1e-2_a1e-2.png"></img>
+<p>pgd eps=0.01 alpha=0.01</p>
+</div>
+</div>
+<div class="w3-col s4 m4 l4">
+<div class="w3-container">
+<span style="display:block">min: -0.00404679</span>
+<span style="display:block">max: 0.00530634</span>
+<span style="display:block">rng: 0.00935312</span>
+<span style="display:block">avg: -8.01019e-05</span>
+<span style="display:block">var: 1.05586e-06</span>
+<span style="display:block">L0: 1</span>
+<span style="display:block">L1: 0.000805458</span>
+<span style="display:block">L2: 0.0571253</span>
+<span style="display:block">Linf: 0.00530634</span>
+</div>
+</div>
+</div>
+</td>
+<td>
+<div class="w3-row" style="display:inline-block">
+<div class="w3-col s8 m8 l8">
+<div class="w3-container w3-center">
+<img class="w3-image" src="img\resnet18_imagenet-svhn_pgd_e1e-2_a5e-3.png"></img>
+<p>pgd eps=0.01 alpha=0.005</p>
+</div>
+</div>
+<div class="w3-col s4 m4 l4">
+<div class="w3-container">
+<span style="display:block">min: -0.00565942</span>
+<span style="display:block">max: 0.00601152</span>
+<span style="display:block">rng: 0.0116709</span>
+<span style="display:block">avg: -0.000110974</span>
+<span style="display:block">var: 1.59573e-06</span>
+<span style="display:block">L0: 1</span>
+<span style="display:block">L1: 0.000970836</span>
+<span style="display:block">L2: 0.0702846</span>
+<span style="display:block">Linf: 0.00601152</span>
+</div>
+</div>
+</div>
+</td>
+<td>
+<div class="w3-row" style="display:inline-block">
+<div class="w3-col s8 m8 l8">
+<div class="w3-container w3-center">
+<img class="w3-image" src="img\resnet18_imagenet-svhn_pgd_e1e-2_a1e-3.png"></img>
+<p>pgd eps=0.01 alpha=0.001</p>
+</div>
+</div>
+<div class="w3-col s4 m4 l4">
+<div class="w3-container">
+<span style="display:block">min: -0.00756845</span>
+<span style="display:block">max: 0.00721137</span>
+<span style="display:block">rng: 0.0147798</span>
+<span style="display:block">avg: -0.000120397</span>
+<span style="display:block">var: 5.8833e-06</span>
+<span style="display:block">L0: 1</span>
+<span style="display:block">L1: 0.00190576</span>
+<span style="display:block">L2: 0.134603</span>
+<span style="display:block">Linf: 0.00756845</span>
+</div>
+</div>
+</div>
+</td>
+<td>
+<div class="w3-row" style="display:inline-block">
+<div class="w3-col s8 m8 l8">
+<div class="w3-container w3-center">
+<img class="w3-image" src="img\resnet18_imagenet-svhn_pgd_e1e-2_a5e-4.png"></img>
+<p>pgd eps=0.01 alpha=0.0005</p>
+</div>
+</div>
+<div class="w3-col s4 m4 l4">
+<div class="w3-container">
+<span style="display:block">min: -0.00811071</span>
+<span style="display:block">max: 0.00864178</span>
+<span style="display:block">rng: 0.0167525</span>
+<span style="display:block">avg: -0.000221173</span>
+<span style="display:block">var: 1.61048e-05</span>
+<span style="display:block">L0: 1</span>
+<span style="display:block">L1: 0.0035605</span>
+<span style="display:block">L2: 0.222765</span>
+<span style="display:block">Linf: 0.00864178</span>
+</div>
+</div>
+</div>
+</td>
+</tr>
+</table>
+<table id="mifgsm" class="w3-table tabpage" style="display:none">
+<tr>
+<td>
+<div class="w3-row" style="display:inline-block">
+<div class="w3-col s8 m8 l8">
+<div class="w3-container w3-center">
+<img class="w3-image" src="img\resnet18_imagenet-svhn_mifgsm_e1e-1_a1e-2.png"></img>
+<p>mifgsm eps=0.1 alpha=0.01</p>
+</div>
+</div>
+<div class="w3-col s4 m4 l4">
+<div class="w3-container">
+<span style="display:block">min: -0.0991987</span>
+<span style="display:block">max: 0.0928171</span>
+<span style="display:block">rng: 0.192016</span>
+<span style="display:block">avg: 0.000895241</span>
+<span style="display:block">var: 0.00193656</span>
+<span style="display:block">L0: 1</span>
+<span style="display:block">L1: 0.0366804</span>
+<span style="display:block">L2: 2.43958</span>
+<span style="display:block">Linf: 0.0991987</span>
+</div>
+</div>
+</div>
+</td>
+<td>
+<div class="w3-row" style="display:inline-block">
+<div class="w3-col s8 m8 l8">
+<div class="w3-container w3-center">
+<img class="w3-image" src="img\resnet18_imagenet-svhn_mifgsm_e1e-1_a5e-3.png"></img>
+<p>mifgsm eps=0.1 alpha=0.005</p>
+</div>
+</div>
+<div class="w3-col s4 m4 l4">
+<div class="w3-container">
+<span style="display:block">min: -0.0969559</span>
+<span style="display:block">max: 0.0952508</span>
+<span style="display:block">rng: 0.192207</span>
+<span style="display:block">avg: -0.000408418</span>
+<span style="display:block">var: 0.00349762</span>
+<span style="display:block">L0: 1</span>
+<span style="display:block">L1: 0.0542217</span>
+<span style="display:block">L2: 3.27799</span>
+<span style="display:block">Linf: 0.0969559</span>
+</div>
+</div>
+</div>
+</td>
+<td>
+<div class="w3-row" style="display:inline-block">
+<div class="w3-col s8 m8 l8">
+<div class="w3-container w3-center">
+<img class="w3-image" src="img\resnet18_imagenet-svhn_mifgsm_e1e-1_a1e-3.png"></img>
+<p>mifgsm eps=0.1 alpha=0.001</p>
+</div>
+</div>
+<div class="w3-col s4 m4 l4">
+<div class="w3-container">
+<span style="display:block">min: -0.0956627</span>
+<span style="display:block">max: 0.0961944</span>
+<span style="display:block">rng: 0.191857</span>
+<span style="display:block">avg: -0.00335252</span>
+<span style="display:block">var: 0.00623546</span>
+<span style="display:block">L0: 1</span>
+<span style="display:block">L1: 0.0762482</span>
+<span style="display:block">L2: 4.38062</span>
+<span style="display:block">Linf: 0.0961944</span>
+</div>
+</div>
+</div>
+</td>
+<td>
+<div class="w3-row" style="display:inline-block">
+<div class="w3-col s8 m8 l8">
+<div class="w3-container w3-center">
+<img class="w3-image" src="img\resnet18_imagenet-svhn_mifgsm_e1e-1_a5e-4.png"></img>
+<p>mifgsm eps=0.1 alpha=0.0005</p>
+</div>
+</div>
+<div class="w3-col s4 m4 l4">
+<div class="w3-container">
+<span style="display:block">min: -0.0977321</span>
+<span style="display:block">max: 0.0976076</span>
+<span style="display:block">rng: 0.19534</span>
+<span style="display:block">avg: -0.00938171</span>
+<span style="display:block">var: 0.00632515</span>
+<span style="display:block">L0: 1</span>
+<span style="display:block">L1: 0.0760924</span>
+<span style="display:block">L2: 4.43861</span>
+<span style="display:block">Linf: 0.0977321</span>
+</div>
+</div>
+</div>
+</td>
+</tr>
+<tr>
+<td>
+<div class="w3-row" style="display:inline-block">
+<div class="w3-col s8 m8 l8">
+<div class="w3-container w3-center">
+<img class="w3-image" src="img\resnet18_imagenet-svhn_mifgsm_e5e-2_a1e-2.png"></img>
+<p>mifgsm eps=0.05 alpha=0.01</p>
+</div>
+</div>
+<div class="w3-col s4 m4 l4">
+<div class="w3-container">
+<span style="display:block">min: -0.0429974</span>
+<span style="display:block">max: 0.0457813</span>
+<span style="display:block">rng: 0.0887787</span>
+<span style="display:block">avg: -0.000420021</span>
+<span style="display:block">var: 0.000244391</span>
+<span style="display:block">L0: 1</span>
+<span style="display:block">L1: 0.012611</span>
+<span style="display:block">L2: 0.866783</span>
+<span style="display:block">Linf: 0.0457813</span>
+</div>
+</div>
+</div>
+</td>
+<td>
+<div class="w3-row" style="display:inline-block">
+<div class="w3-col s8 m8 l8">
+<div class="w3-container w3-center">
+<img class="w3-image" src="img\resnet18_imagenet-svhn_mifgsm_e5e-2_a5e-3.png"></img>
+<p>mifgsm eps=0.05 alpha=0.005</p>
+</div>
+</div>
+<div class="w3-col s4 m4 l4">
+<div class="w3-container">
+<span style="display:block">min: -0.0455086</span>
+<span style="display:block">max: 0.0451779</span>
+<span style="display:block">rng: 0.0906865</span>
+<span style="display:block">avg: -0.000387399</span>
+<span style="display:block">var: 0.000330339</span>
+<span style="display:block">L0: 1</span>
+<span style="display:block">L1: 0.0148045</span>
+<span style="display:block">L2: 1.0076</span>
+<span style="display:block">Linf: 0.0455086</span>
+</div>
+</div>
+</div>
+</td>
+<td>
+<div class="w3-row" style="display:inline-block">
+<div class="w3-col s8 m8 l8">
+<div class="w3-container w3-center">
+<img class="w3-image" src="img\resnet18_imagenet-svhn_mifgsm_e5e-2_a1e-3.png"></img>
+<p>mifgsm eps=0.05 alpha=0.001</p>
+</div>
+</div>
+<div class="w3-col s4 m4 l4">
+<div class="w3-container">
+<span style="display:block">min: -0.0466148</span>
+<span style="display:block">max: 0.0467396</span>
+<span style="display:block">rng: 0.0933543</span>
+<span style="display:block">avg: -0.000355624</span>
+<span style="display:block">var: 0.00136207</span>
+<span style="display:block">L0: 1</span>
+<span style="display:block">L1: 0.0362205</span>
+<span style="display:block">L2: 2.04565</span>
+<span style="display:block">Linf: 0.0467396</span>
+</div>
+</div>
+</div>
+</td>
+<td>
+<div class="w3-row" style="display:inline-block">
+<div class="w3-col s8 m8 l8">
+<div class="w3-container w3-center">
+<img class="w3-image" src="img\resnet18_imagenet-svhn_mifgsm_e5e-2_a5e-4.png"></img>
+<p>mifgsm eps=0.05 alpha=0.0005</p>
+</div>
+</div>
+<div class="w3-col s4 m4 l4">
+<div class="w3-container">
+<span style="display:block">min: -0.0478676</span>
+<span style="display:block">max: 0.0480209</span>
+<span style="display:block">rng: 0.0958885</span>
+<span style="display:block">avg: -0.00173957</span>
+<span style="display:block">var: 0.00167813</span>
+<span style="display:block">L0: 1</span>
+<span style="display:block">L1: 0.0401776</span>
+<span style="display:block">L2: 2.27255</span>
+<span style="display:block">Linf: 0.0480209</span>
+</div>
+</div>
+</div>
+</td>
+</tr>
+<tr>
+<td>
+<div class="w3-row" style="display:inline-block">
+<div class="w3-col s8 m8 l8">
+<div class="w3-container w3-center">
+<img class="w3-image" src="img\resnet18_imagenet-svhn_mifgsm_e3e-2_a1e-2.png"></img>
+<p>mifgsm eps=0.03 alpha=0.01</p>
+</div>
+</div>
+<div class="w3-col s4 m4 l4">
+<div class="w3-container">
+<span style="display:block">min: -0.023125</span>
+<span style="display:block">max: 0.02392</span>
+<span style="display:block">rng: 0.047045</span>
+<span style="display:block">avg: -0.000352171</span>
+<span style="display:block">var: 5.5837e-05</span>
+<span style="display:block">L0: 1</span>
+<span style="display:block">L1: 0.00601806</span>
+<span style="display:block">L2: 0.414623</span>
+<span style="display:block">Linf: 0.02392</span>
+</div>
+</div>
+</div>
+</td>
+<td>
+<div class="w3-row" style="display:inline-block">
+<div class="w3-col s8 m8 l8">
+<div class="w3-container w3-center">
+<img class="w3-image" src="img\resnet18_imagenet-svhn_mifgsm_e3e-2_a5e-3.png"></img>
+<p>mifgsm eps=0.03 alpha=0.005</p>
+</div>
+</div>
+<div class="w3-col s4 m4 l4">
+<div class="w3-container">
+<span style="display:block">min: -0.0281175</span>
+<span style="display:block">max: 0.026368</span>
+<span style="display:block">rng: 0.0544855</span>
+<span style="display:block">avg: -0.000425718</span>
+<span style="display:block">var: 7.24066e-05</span>
+<span style="display:block">L0: 1</span>
+<span style="display:block">L1: 0.00677627</span>
+<span style="display:block">L2: 0.472218</span>
+<span style="display:block">Linf: 0.0281175</span>
+</div>
+</div>
+</div>
+</td>
+<td>
+<div class="w3-row" style="display:inline-block">
+<div class="w3-col s8 m8 l8">
+<div class="w3-container w3-center">
+<img class="w3-image" src="img\resnet18_imagenet-svhn_mifgsm_e3e-2_a1e-3.png"></img>
+<p>mifgsm eps=0.03 alpha=0.001</p>
+</div>
+</div>
+<div class="w3-col s4 m4 l4">
+<div class="w3-container">
+<span style="display:block">min: -0.0271781</span>
+<span style="display:block">max: 0.0273204</span>
+<span style="display:block">rng: 0.0544985</span>
+<span style="display:block">avg: -0.0010275</span>
+<span style="display:block">var: 0.000323447</span>
+<span style="display:block">L0: 1</span>
+<span style="display:block">L1: 0.0174282</span>
+<span style="display:block">L2: 0.998435</span>
+<span style="display:block">Linf: 0.0273204</span>
+</div>
+</div>
+</div>
+</td>
+<td>
+<div class="w3-row" style="display:inline-block">
+<div class="w3-col s8 m8 l8">
+<div class="w3-container w3-center">
+<img class="w3-image" src="img\resnet18_imagenet-svhn_mifgsm_e3e-2_a5e-4.png"></img>
+<p>mifgsm eps=0.03 alpha=0.0005</p>
+</div>
+</div>
+<div class="w3-col s4 m4 l4">
+<div class="w3-container">
+<span style="display:block">min: -0.0275908</span>
+<span style="display:block">max: 0.0279019</span>
+<span style="display:block">rng: 0.0554927</span>
+<span style="display:block">avg: -0.00115434</span>
+<span style="display:block">var: 0.000514053</span>
+<span style="display:block">L0: 1</span>
+<span style="display:block">L1: 0.022468</span>
+<span style="display:block">L2: 1.25828</span>
+<span style="display:block">Linf: 0.0279019</span>
+</div>
+</div>
+</div>
+</td>
+</tr>
+<tr>
+<td>
+<div class="w3-row" style="display:inline-block">
+<div class="w3-col s8 m8 l8">
+<div class="w3-container w3-center">
+<img class="w3-image" src="img\resnet18_imagenet-svhn_mifgsm_e1e-2_a1e-2.png"></img>
+<p>mifgsm eps=0.01 alpha=0.01</p>
+</div>
+</div>
+<div class="w3-col s4 m4 l4">
+<div class="w3-container">
+<span style="display:block">min: -0.00507812</span>
+<span style="display:block">max: 0.00539062</span>
+<span style="display:block">rng: 0.0104687</span>
+<span style="display:block">avg: -0.000136639</span>
+<span style="display:block">var: 1.67567e-06</span>
+<span style="display:block">L0: 0.996745</span>
+<span style="display:block">L1: 0.00101157</span>
+<span style="display:block">L2: 0.0721457</span>
+<span style="display:block">Linf: 0.00539062</span>
+</div>
+</div>
+</div>
+</td>
+<td>
+<div class="w3-row" style="display:inline-block">
+<div class="w3-col s8 m8 l8">
+<div class="w3-container w3-center">
+<img class="w3-image" src="img\resnet18_imagenet-svhn_mifgsm_e1e-2_a5e-3.png"></img>
+<p>mifgsm eps=0.01 alpha=0.005</p>
+</div>
+</div>
+<div class="w3-col s4 m4 l4">
+<div class="w3-container">
+<span style="display:block">min: -0.00547718</span>
+<span style="display:block">max: 0.00667969</span>
+<span style="display:block">rng: 0.0121569</span>
+<span style="display:block">avg: -0.000164095</span>
+<span style="display:block">var: 1.99795e-06</span>
+<span style="display:block">L0: 0.999023</span>
+<span style="display:block">L1: 0.00110368</span>
+<span style="display:block">L2: 0.0788697</span>
+<span style="display:block">Linf: 0.00667969</span>
+</div>
+</div>
+</div>
+</td>
+<td>
+<div class="w3-row" style="display:inline-block">
+<div class="w3-col s8 m8 l8">
+<div class="w3-container w3-center">
+<img class="w3-image" src="img\resnet18_imagenet-svhn_mifgsm_e1e-2_a1e-3.png"></img>
+<p>mifgsm eps=0.01 alpha=0.001</p>
+</div>
+</div>
+<div class="w3-col s4 m4 l4">
+<div class="w3-container">
+<span style="display:block">min: -0.00598824</span>
+<span style="display:block">max: 0.0059339</span>
+<span style="display:block">rng: 0.0119221</span>
+<span style="display:block">avg: -0.000164962</span>
+<span style="display:block">var: 2.63975e-06</span>
+<span style="display:block">L0: 1</span>
+<span style="display:block">L1: 0.0012709</span>
+<span style="display:block">L2: 0.0905146</span>
+<span style="display:block">Linf: 0.00598824</span>
+</div>
+</div>
+</div>
+</td>
+<td>
+<div class="w3-row" style="display:inline-block">
+<div class="w3-col s8 m8 l8">
+<div class="w3-container w3-center">
+<img class="w3-image" src="img\resnet18_imagenet-svhn_mifgsm_e1e-2_a5e-4.png"></img>
+<p>mifgsm eps=0.01 alpha=0.0005</p>
+</div>
+</div>
+<div class="w3-col s4 m4 l4">
+<div class="w3-container">
+<span style="display:block">min: -0.00777682</span>
+<span style="display:block">max: 0.00698814</span>
+<span style="display:block">rng: 0.014765</span>
+<span style="display:block">avg: -0.000200821</span>
+<span style="display:block">var: 8.02297e-06</span>
+<span style="display:block">L0: 1</span>
+<span style="display:block">L1: 0.00234159</span>
+<span style="display:block">L2: 0.157386</span>
+<span style="display:block">Linf: 0.00777682</span>
+</div>
+</div>
+</div>
+</td>
+</tr>
+</table>
+<table id="pgdl2" class="w3-table tabpage" style="display:none">
+<tr>
+<td>
+<div class="w3-row" style="display:inline-block">
+<div class="w3-col s8 m8 l8">
+<div class="w3-container w3-center">
+<img class="w3-image" src="img\resnet18_imagenet-svhn_pgdl2_e3_a1e-2.png"></img>
+<p>pgdl2 eps=3 alpha=0.01</p>
+</div>
+</div>
+<div class="w3-col s4 m4 l4">
+<div class="w3-container">
+<span style="display:block">min: -0.143243</span>
+<span style="display:block">max: 0.14745</span>
+<span style="display:block">rng: 0.290693</span>
+<span style="display:block">avg: -0.00773148</span>
+<span style="display:block">var: 0.00283245</span>
+<span style="display:block">L0: 1</span>
+<span style="display:block">L1: 0.044531</span>
+<span style="display:block">L2: 2.98076</span>
+<span style="display:block">Linf: 0.14745</span>
+</div>
+</div>
+</div>
+</td>
+<td>
+<div class="w3-row" style="display:inline-block">
+<div class="w3-col s8 m8 l8">
+<div class="w3-container w3-center">
+<img class="w3-image" src="img\resnet18_imagenet-svhn_pgdl2_e3_a5e-3.png"></img>
+<p>pgdl2 eps=3 alpha=0.005</p>
+</div>
+</div>
+<div class="w3-col s4 m4 l4">
+<div class="w3-container">
+<span style="display:block">min: -0.13904</span>
+<span style="display:block">max: 0.120439</span>
+<span style="display:block">rng: 0.259479</span>
+<span style="display:block">avg: -0.0139962</span>
+<span style="display:block">var: 0.00269086</span>
+<span style="display:block">L0: 1</span>
+<span style="display:block">L1: 0.0454453</span>
+<span style="display:block">L2: 2.97794</span>
+<span style="display:block">Linf: 0.13904</span>
+</div>
+</div>
+</div>
+</td>
+<td>
+<div class="w3-row" style="display:inline-block">
+<div class="w3-col s8 m8 l8">
+<div class="w3-container w3-center">
+<img class="w3-image" src="img\resnet18_imagenet-svhn_pgdl2_e3_a1e-3.png"></img>
+<p>pgdl2 eps=3 alpha=0.001</p>
+</div>
+</div>
+<div class="w3-col s4 m4 l4">
+<div class="w3-container">
+<span style="display:block">min: -0.0888866</span>
+<span style="display:block">max: 0.0578088</span>
+<span style="display:block">rng: 0.146695</span>
+<span style="display:block">avg: -0.0103389</span>
+<span style="display:block">var: 0.000788363</span>
+<span style="display:block">L0: 1</span>
+<span style="display:block">L1: 0.0232005</span>
+<span style="display:block">L2: 1.65838</span>
+<span style="display:block">Linf: 0.0888866</span>
+</div>
+</div>
+</div>
+</td>
+<td>
+<div class="w3-row" style="display:inline-block">
+<div class="w3-col s8 m8 l8">
+<div class="w3-container w3-center">
+<img class="w3-image" src="img\resnet18_imagenet-svhn_pgdl2_e3_a5e-4.png"></img>
+<p>pgdl2 eps=3 alpha=0.0005</p>
+</div>
+</div>
+<div class="w3-col s4 m4 l4">
+<div class="w3-container">
+<span style="display:block">min: -0.0782294</span>
+<span style="display:block">max: 0.0404038</span>
+<span style="display:block">rng: 0.118633</span>
+<span style="display:block">avg: -0.00716273</span>
+<span style="display:block">var: 0.000398248</span>
+<span style="display:block">L0: 1</span>
+<span style="display:block">L1: 0.0155572</span>
+<span style="display:block">L2: 1.17517</span>
+<span style="display:block">Linf: 0.0782294</span>
+</div>
+</div>
+</div>
+</td>
+</tr>
+<tr>
+<td>
+<div class="w3-row" style="display:inline-block">
+<div class="w3-col s8 m8 l8">
+<div class="w3-container w3-center">
+<img class="w3-image" src="img\resnet18_imagenet-svhn_pgdl2_e1_a1e-2.png"></img>
+<p>pgdl2 eps=1 alpha=0.01</p>
+</div>
+</div>
+<div class="w3-col s4 m4 l4">
+<div class="w3-container">
+<span style="display:block">min: -0.0790934</span>
+<span style="display:block">max: 0.0767887</span>
+<span style="display:block">rng: 0.155882</span>
+<span style="display:block">avg: -0.000530837</span>
+<span style="display:block">var: 0.000313759</span>
+<span style="display:block">L0: 1</span>
+<span style="display:block">L1: 0.0124222</span>
+<span style="display:block">L2: 0.982208</span>
+<span style="display:block">Linf: 0.0790934</span>
+</div>
+</div>
+</div>
+</td>
+<td>
+<div class="w3-row" style="display:inline-block">
+<div class="w3-col s8 m8 l8">
+<div class="w3-container w3-center">
+<img class="w3-image" src="img\resnet18_imagenet-svhn_pgdl2_e1_a5e-3.png"></img>
+<p>pgdl2 eps=1 alpha=0.005</p>
+</div>
+</div>
+<div class="w3-col s4 m4 l4">
+<div class="w3-container">
+<span style="display:block">min: -0.0939431</span>
+<span style="display:block">max: 0.069113</span>
+<span style="display:block">rng: 0.163056</span>
+<span style="display:block">avg: -0.000986394</span>
+<span style="display:block">var: 0.00032081</span>
+<span style="display:block">L0: 1</span>
+<span style="display:block">L1: 0.0128382</span>
+<span style="display:block">L2: 0.994243</span>
+<span style="display:block">Linf: 0.0939431</span>
+</div>
+</div>
+</div>
+</td>
+<td>
+<div class="w3-row" style="display:inline-block">
+<div class="w3-col s8 m8 l8">
+<div class="w3-container w3-center">
+<img class="w3-image" src="img\resnet18_imagenet-svhn_pgdl2_e1_a1e-3.png"></img>
+<p>pgdl2 eps=1 alpha=0.001</p>
+</div>
+</div>
+<div class="w3-col s4 m4 l4">
+<div class="w3-container">
+<span style="display:block">min: -0.0773166</span>
+<span style="display:block">max: 0.044706</span>
+<span style="display:block">rng: 0.122023</span>
+<span style="display:block">avg: -0.00375449</span>
+<span style="display:block">var: 0.000310799</span>
+<span style="display:block">L0: 1</span>
+<span style="display:block">L1: 0.0130271</span>
+<span style="display:block">L2: 0.999039</span>
+<span style="display:block">Linf: 0.0773166</span>
+</div>
+</div>
+</div>
+</td>
+<td>
+<div class="w3-row" style="display:inline-block">
+<div class="w3-col s8 m8 l8">
+<div class="w3-container w3-center">
+<img class="w3-image" src="img\resnet18_imagenet-svhn_pgdl2_e1_a5e-4.png"></img>
+<p>pgdl2 eps=1 alpha=0.0005</p>
+</div>
+</div>
+<div class="w3-col s4 m4 l4">
+<div class="w3-container">
+<span style="display:block">min: -0.0721284</span>
+<span style="display:block">max: 0.0377936</span>
+<span style="display:block">rng: 0.109922</span>
+<span style="display:block">avg: -0.00544058</span>
+<span style="display:block">var: 0.00029497</span>
+<span style="display:block">L0: 1</span>
+<span style="display:block">L1: 0.0130218</span>
+<span style="display:block">L2: 0.998539</span>
+<span style="display:block">Linf: 0.0721284</span>
+</div>
+</div>
+</div>
+</td>
+</tr>
+<tr>
+<td>
+<div class="w3-row" style="display:inline-block">
+<div class="w3-col s8 m8 l8">
+<div class="w3-container w3-center">
+<img class="w3-image" src="img\resnet18_imagenet-svhn_pgdl2_e5e-1_a1e-2.png"></img>
+<p>pgdl2 eps=0.5 alpha=0.01</p>
+</div>
+</div>
+<div class="w3-col s4 m4 l4">
+<div class="w3-container">
+<span style="display:block">min: -0.0541397</span>
+<span style="display:block">max: 0.0842232</span>
+<span style="display:block">rng: 0.138363</span>
+<span style="display:block">avg: -0.000120263</span>
+<span style="display:block">var: 7.19855e-05</span>
+<span style="display:block">L0: 1</span>
+<span style="display:block">L1: 0.00526869</span>
+<span style="display:block">L2: 0.470302</span>
+<span style="display:block">Linf: 0.0842232</span>
+</div>
+</div>
+</div>
+</td>
+<td>
+<div class="w3-row" style="display:inline-block">
+<div class="w3-col s8 m8 l8">
+<div class="w3-container w3-center">
+<img class="w3-image" src="img\resnet18_imagenet-svhn_pgdl2_e5e-1_a5e-3.png"></img>
+<p>pgdl2 eps=0.5 alpha=0.005</p>
+</div>
+</div>
+<div class="w3-col s4 m4 l4">
+<div class="w3-container">
+<span style="display:block">min: -0.0470367</span>
+<span style="display:block">max: 0.0661284</span>
+<span style="display:block">rng: 0.113165</span>
+<span style="display:block">avg: -0.000189275</span>
+<span style="display:block">var: 7.84952e-05</span>
+<span style="display:block">L0: 1</span>
+<span style="display:block">L1: 0.0055475</span>
+<span style="display:block">L2: 0.491169</span>
+<span style="display:block">Linf: 0.0661284</span>
+</div>
+</div>
+</div>
+</td>
+<td>
+<div class="w3-row" style="display:inline-block">
+<div class="w3-col s8 m8 l8">
+<div class="w3-container w3-center">
+<img class="w3-image" src="img\resnet18_imagenet-svhn_pgdl2_e5e-1_a1e-3.png"></img>
+<p>pgdl2 eps=0.5 alpha=0.001</p>
+</div>
+</div>
+<div class="w3-col s4 m4 l4">
+<div class="w3-container">
+<span style="display:block">min: -0.0516431</span>
+<span style="display:block">max: 0.047862</span>
+<span style="display:block">rng: 0.0995051</span>
+<span style="display:block">avg: -0.000837642</span>
+<span style="display:block">var: 7.99966e-05</span>
+<span style="display:block">L0: 1</span>
+<span style="display:block">L1: 0.00580552</span>
+<span style="display:block">L2: 0.4979</span>
+<span style="display:block">Linf: 0.0516431</span>
+</div>
+</div>
+</div>
+</td>
+<td>
+<div class="w3-row" style="display:inline-block">
+<div class="w3-col s8 m8 l8">
+<div class="w3-container w3-center">
+<img class="w3-image" src="img\resnet18_imagenet-svhn_pgdl2_e5e-1_a5e-4.png"></img>
+<p>pgdl2 eps=0.5 alpha=0.0005</p>
+</div>
+</div>
+<div class="w3-col s4 m4 l4">
+<div class="w3-container">
+<span style="display:block">min: -0.0526968</span>
+<span style="display:block">max: 0.0357454</span>
+<span style="display:block">rng: 0.0884422</span>
+<span style="display:block">avg: -0.00137694</span>
+<span style="display:block">var: 7.93185e-05</span>
+<span style="display:block">L0: 1</span>
+<span style="display:block">L1: 0.00576013</span>
+<span style="display:block">L2: 0.499491</span>
+<span style="display:block">Linf: 0.0526968</span>
+</div>
+</div>
+</div>
+</td>
+</tr>
+<tr>
+<td>
+<div class="w3-row" style="display:inline-block">
+<div class="w3-col s8 m8 l8">
+<div class="w3-container w3-center">
+<img class="w3-image" src="img\resnet18_imagenet-svhn_pgdl2_e3e-1_a1e-2.png"></img>
+<p>pgdl2 eps=0.3 alpha=0.01</p>
+</div>
+</div>
+<div class="w3-col s4 m4 l4">
+<div class="w3-container">
+<span style="display:block">min: -0.0364363</span>
+<span style="display:block">max: 0.0652589</span>
+<span style="display:block">rng: 0.101695</span>
+<span style="display:block">avg: -2.73429e-05</span>
+<span style="display:block">var: 2.12271e-05</span>
+<span style="display:block">L0: 1</span>
+<span style="display:block">L1: 0.00258867</span>
+<span style="display:block">L2: 0.255366</span>
+<span style="display:block">Linf: 0.0652589</span>
+</div>
+</div>
+</div>
+</td>
+<td>
+<div class="w3-row" style="display:inline-block">
+<div class="w3-col s8 m8 l8">
+<div class="w3-container w3-center">
+<img class="w3-image" src="img\resnet18_imagenet-svhn_pgdl2_e3e-1_a5e-3.png"></img>
+<p>pgdl2 eps=0.3 alpha=0.005</p>
+</div>
+</div>
+<div class="w3-col s4 m4 l4">
+<div class="w3-container">
+<span style="display:block">min: -0.0313372</span>
+<span style="display:block">max: 0.0566774</span>
+<span style="display:block">rng: 0.0880146</span>
+<span style="display:block">avg: -4.91705e-05</span>
+<span style="display:block">var: 2.66014e-05</span>
+<span style="display:block">L0: 1</span>
+<span style="display:block">L1: 0.00283072</span>
+<span style="display:block">L2: 0.285879</span>
+<span style="display:block">Linf: 0.0566774</span>
+</div>
+</div>
+</div>
+</td>
+<td>
+<div class="w3-row" style="display:inline-block">
+<div class="w3-col s8 m8 l8">
+<div class="w3-container w3-center">
+<img class="w3-image" src="img\resnet18_imagenet-svhn_pgdl2_e3e-1_a1e-3.png"></img>
+<p>pgdl2 eps=0.3 alpha=0.001</p>
+</div>
+</div>
+<div class="w3-col s4 m4 l4">
+<div class="w3-container">
+<span style="display:block">min: -0.0447629</span>
+<span style="display:block">max: 0.0550352</span>
+<span style="display:block">rng: 0.0997982</span>
+<span style="display:block">avg: -0.000255183</span>
+<span style="display:block">var: 2.89956e-05</span>
+<span style="display:block">L0: 1</span>
+<span style="display:block">L1: 0.00304466</span>
+<span style="display:block">L2: 0.298789</span>
+<span style="display:block">Linf: 0.0550352</span>
+</div>
+</div>
+</div>
+</td>
+<td>
+<div class="w3-row" style="display:inline-block">
+<div class="w3-col s8 m8 l8">
+<div class="w3-container w3-center">
+<img class="w3-image" src="img\resnet18_imagenet-svhn_pgdl2_e3e-1_a5e-4.png"></img>
+<p>pgdl2 eps=0.3 alpha=0.0005</p>
+</div>
+</div>
+<div class="w3-col s4 m4 l4">
+<div class="w3-container">
+<span style="display:block">min: -0.0404747</span>
+<span style="display:block">max: 0.0376313</span>
+<span style="display:block">rng: 0.078106</span>
+<span style="display:block">avg: -0.000511871</span>
+<span style="display:block">var: 2.88599e-05</span>
+<span style="display:block">L0: 1</span>
+<span style="display:block">L1: 0.00315297</span>
+<span style="display:block">L2: 0.299103</span>
+<span style="display:block">Linf: 0.0404747</span>
+</div>
+</div>
+</div>
+</td>
+</tr>
+</table>
+<table id="alpha-decay" class="w3-table tabpage" style="display:none">
+<tr>
+<td>
+<div class="w3-row" style="display:inline-block">
+<div class="w3-col s8 m8 l8">
+<div class="w3-container w3-center">
+<img class="w3-image" src="img\resnet18_imagenet-svhn_pgd_e3e-2_a1e-4.png"></img>
+<p>pgd eps=0.03 alpha=0.0001</p>
+</div>
+</div>
+<div class="w3-col s4 m4 l4">
+<div class="w3-container">
+<span style="display:block">min: -0.0292686</span>
+<span style="display:block">max: 0.0291463</span>
+<span style="display:block">rng: 0.0584149</span>
+<span style="display:block">avg: -0.00265511</span>
+<span style="display:block">var: 0.000710239</span>
+<span style="display:block">L0: 1</span>
+<span style="display:block">L1: 0.0261533</span>
+<span style="display:block">L2: 1.48442</span>
+<span style="display:block">Linf: 0.0292686</span>
+</div>
+</div>
+</div>
+</td>
+<td>
+<div class="w3-row" style="display:inline-block">
+<div class="w3-col s8 m8 l8">
+<div class="w3-container w3-center">
+<img class="w3-image" src="img\resnet18_imagenet-svhn_pgd_e3e-2_a1e-5.png"></img>
+<p>pgd eps=0.03 alpha=1e-05</p>
+</div>
+</div>
+<div class="w3-col s4 m4 l4">
+<div class="w3-container">
+<span style="display:block">min: -0.0299237</span>
+<span style="display:block">max: 0.0297715</span>
+<span style="display:block">rng: 0.0596952</span>
+<span style="display:block">avg: -0.00787095</span>
+<span style="display:block">var: 0.000291278</span>
+<span style="display:block">L0: 1</span>
+<span style="display:block">L1: 0.0157791</span>
+<span style="display:block">L2: 1.04169</span>
+<span style="display:block">Linf: 0.0299237</span>
+</div>
+</div>
+</div>
+</td>
+</tr>
+<tr>
+<td>
+<div class="w3-row" style="display:inline-block">
+<div class="w3-col s8 m8 l8">
+<div class="w3-container w3-center">
+<img class="w3-image" src="img\resnet18_imagenet-svhn_pgd_e3e-2_a1e-3_to1e-4.png"></img>
+<p>pgd eps=0.03 alpha_from=0.001 alpha_to=0.0001</p>
+</div>
+</div>
+<div class="w3-col s4 m4 l4">
+<div class="w3-container">
+<span style="display:block">min: -0.0293474</span>
+<span style="display:block">max: 0.0293214</span>
+<span style="display:block">rng: 0.0586689</span>
+<span style="display:block">avg: -0.00205411</span>
+<span style="display:block">var: 0.000718034</span>
+<span style="display:block">L0: 1</span>
+<span style="display:block">L1: 0.026296</span>
+<span style="display:block">L2: 1.48955</span>
+<span style="display:block">Linf: 0.0293474</span>
+</div>
+</div>
+</div>
+</td>
+<td>
+<div class="w3-row" style="display:inline-block">
+<div class="w3-col s8 m8 l8">
+<div class="w3-container w3-center">
+<img class="w3-image" src="img\resnet18_imagenet-svhn_pgd_e3e-2_a1e-3_to2e-5.png"></img>
+<p>pgd eps=0.03 alpha_from=0.001 alpha_to=2e-05</p>
+</div>
+</div>
+<div class="w3-col s4 m4 l4">
+<div class="w3-container">
+<span style="display:block">min: -0.0298821</span>
+<span style="display:block">max: 0.029832</span>
+<span style="display:block">rng: 0.0597141</span>
+<span style="display:block">avg: -0.00585801</span>
+<span style="display:block">var: 0.000589448</span>
+<span style="display:block">L0: 1</span>
+<span style="display:block">L1: 0.0236407</span>
+<span style="display:block">L2: 1.38427</span>
+<span style="display:block">Linf: 0.0298821</span>
+</div>
+</div>
+</div>
+</td>
+</tr>
+</table>
+<div id="models"class="w3-container tabpage" style="display:none">
+<div class="w3-row" style="display:inline-block">
+<div class="w3-col s8 m8 l8">
+<div class="w3-container w3-center">
+<img class="w3-image" src="img\resnet18_imagenet-svhn_pgd_e3e-2_a1e-3.png"></img>
+<p>resnet18 pgd eps=0.03 alpha=0.001</p>
+</div>
+</div>
+<div class="w3-col s4 m4 l4">
+<div class="w3-container">
+<span style="display:block">min: -0.0278398</span>
+<span style="display:block">max: 0.0281895</span>
+<span style="display:block">rng: 0.0560293</span>
+<span style="display:block">avg: -0.000709972</span>
+<span style="display:block">var: 0.000416136</span>
+<span style="display:block">L0: 1</span>
+<span style="display:block">L1: 0.0199217</span>
+<span style="display:block">L2: 1.13133</span>
+<span style="display:block">Linf: 0.0281895</span>
+</div>
+</div>
+</div>
+<div class="w3-row" style="display:inline-block">
+<div class="w3-col s8 m8 l8">
+<div class="w3-container w3-center">
+<img class="w3-image" src="img\resnet34_imagenet-svhn_pgd_e3e-2_a1e-3.png"></img>
+<p>resnet34 pgd eps=0.03 alpha=0.001</p>
+</div>
+</div>
+<div class="w3-col s4 m4 l4">
+<div class="w3-container">
+<span style="display:block">min: -0.0285731</span>
+<span style="display:block">max: 0.0284992</span>
+<span style="display:block">rng: 0.0570723</span>
+<span style="display:block">avg: -0.000624837</span>
+<span style="display:block">var: 0.000428132</span>
+<span style="display:block">L0: 1</span>
+<span style="display:block">L1: 0.020068</span>
+<span style="display:block">L2: 1.14735</span>
+<span style="display:block">Linf: 0.0285731</span>
+</div>
+</div>
+</div>
+<div class="w3-row" style="display:inline-block">
+<div class="w3-col s8 m8 l8">
+<div class="w3-container w3-center">
+<img class="w3-image" src="img\resnet50_imagenet-svhn_pgd_e3e-2_a1e-3.png"></img>
+<p>resnet50 pgd eps=0.03 alpha=0.001</p>
+</div>
+</div>
+<div class="w3-col s4 m4 l4">
+<div class="w3-container">
+<span style="display:block">min: -0.0280407</span>
+<span style="display:block">max: 0.0269446</span>
+<span style="display:block">rng: 0.0549854</span>
+<span style="display:block">avg: 0.000253479</span>
+<span style="display:block">var: 0.000410176</span>
+<span style="display:block">L0: 1</span>
+<span style="display:block">L1: 0.0196791</span>
+<span style="display:block">L2: 1.12261</span>
+<span style="display:block">Linf: 0.0280407</span>
+</div>
+</div>
+</div>
+<div class="w3-row" style="display:inline-block">
+<div class="w3-col s8 m8 l8">
+<div class="w3-container w3-center">
+<img class="w3-image" src="img\resnext50_32x4d_imagenet-svhn_pgd_e3e-2_a1e-3.png"></img>
+<p>resnext50_32x4d pgd eps=0.03 alpha=0.001</p>
+</div>
+</div>
+<div class="w3-col s4 m4 l4">
+<div class="w3-container">
+<span style="display:block">min: -0.0282514</span>
+<span style="display:block">max: 0.0273691</span>
+<span style="display:block">rng: 0.0556205</span>
+<span style="display:block">avg: -0.000643371</span>
+<span style="display:block">var: 0.00043215</span>
+<span style="display:block">L0: 1</span>
+<span style="display:block">L1: 0.0202996</span>
+<span style="display:block">L2: 1.15275</span>
+<span style="display:block">Linf: 0.0282514</span>
+</div>
+</div>
+</div>
+<div class="w3-row" style="display:inline-block">
+<div class="w3-col s8 m8 l8">
+<div class="w3-container w3-center">
+<img class="w3-image" src="img\wide_resnet50_2_imagenet-svhn_pgd_e3e-2_a1e-3.png"></img>
+<p>wide_resnet50_2 pgd eps=0.03 alpha=0.001</p>
+</div>
+</div>
+<div class="w3-col s4 m4 l4">
+<div class="w3-container">
+<span style="display:block">min: -0.027348</span>
+<span style="display:block">max: 0.0268706</span>
+<span style="display:block">rng: 0.0542186</span>
+<span style="display:block">avg: -0.000916687</span>
+<span style="display:block">var: 0.000444658</span>
+<span style="display:block">L0: 1</span>
+<span style="display:block">L1: 0.0206616</span>
+<span style="display:block">L2: 1.16986</span>
+<span style="display:block">Linf: 0.027348</span>
+</div>
+</div>
+</div>
+<div class="w3-row" style="display:inline-block">
+<div class="w3-col s8 m8 l8">
+<div class="w3-container w3-center">
+<img class="w3-image" src="img\densenet121_imagenet-svhn_pgd_e3e-2_a1e-3.png"></img>
+<p>densenet121 pgd eps=0.03 alpha=0.001</p>
+</div>
+</div>
+<div class="w3-col s4 m4 l4">
+<div class="w3-container">
+<span style="display:block">min: -0.0287733</span>
+<span style="display:block">max: 0.0285105</span>
+<span style="display:block">rng: 0.0572838</span>
+<span style="display:block">avg: -0.000645485</span>
+<span style="display:block">var: 0.000431824</span>
+<span style="display:block">L0: 1</span>
+<span style="display:block">L1: 0.0202607</span>
+<span style="display:block">L2: 1.15232</span>
+<span style="display:block">Linf: 0.0287733</span>
+</div>
+</div>
+</div>
+<div class="w3-row" style="display:inline-block">
+<div class="w3-col s8 m8 l8">
+<div class="w3-container w3-center">
+<img class="w3-image" src="img\efficientnet_v2_s_imagenet-svhn_pgd_e3e-2_a1e-3.png"></img>
+<p>efficientnet_v2_s pgd eps=0.03 alpha=0.001</p>
+</div>
+</div>
+<div class="w3-col s4 m4 l4">
+<div class="w3-container">
+<span style="display:block">min: -0.0294764</span>
+<span style="display:block">max: 0.0287862</span>
+<span style="display:block">rng: 0.0582626</span>
+<span style="display:block">avg: 0.000274968</span>
+<span style="display:block">var: 0.000386402</span>
+<span style="display:block">L0: 1</span>
+<span style="display:block">L1: 0.0189232</span>
+<span style="display:block">L2: 1.08961</span>
+<span style="display:block">Linf: 0.0294764</span>
+</div>
+</div>
+</div>
+<div class="w3-row" style="display:inline-block">
+<div class="w3-col s8 m8 l8">
+<div class="w3-container w3-center">
+<img class="w3-image" src="img\shufflenet_v2_x1_5_imagenet-svhn_pgd_e3e-2_a1e-3.png"></img>
+<p>shufflenet_v2_x1_5 pgd eps=0.03 alpha=0.001</p>
+</div>
+</div>
+<div class="w3-col s4 m4 l4">
+<div class="w3-container">
+<span style="display:block">min: -0.0279274</span>
+<span style="display:block">max: 0.027474</span>
+<span style="display:block">rng: 0.0554013</span>
+<span style="display:block">avg: -0.000557565</span>
+<span style="display:block">var: 0.000426463</span>
+<span style="display:block">L0: 1</span>
+<span style="display:block">L1: 0.0198375</span>
+<span style="display:block">L2: 1.14501</span>
+<span style="display:block">Linf: 0.0279274</span>
+</div>
+</div>
+</div>
+<div class="w3-row" style="display:inline-block">
+<div class="w3-col s8 m8 l8">
+<div class="w3-container w3-center">
+<img class="w3-image" src="img\squeezenet1_1_imagenet-svhn_pgd_e3e-2_a1e-3.png"></img>
+<p>squeezenet1_1 pgd eps=0.03 alpha=0.001</p>
+</div>
+</div>
+<div class="w3-col s4 m4 l4">
+<div class="w3-container">
+<span style="display:block">min: -0.0283068</span>
+<span style="display:block">max: 0.0285819</span>
+<span style="display:block">rng: 0.0568887</span>
+<span style="display:block">avg: -0.000165135</span>
+<span style="display:block">var: 0.000438854</span>
+<span style="display:block">L0: 1</span>
+<span style="display:block">L1: 0.0199927</span>
+<span style="display:block">L2: 1.16114</span>
+<span style="display:block">Linf: 0.0285819</span>
+</div>
+</div>
+</div>
+<div class="w3-row" style="display:inline-block">
+<div class="w3-col s8 m8 l8">
+<div class="w3-container w3-center">
+<img class="w3-image" src="img\mobilenet_v3_large_imagenet-svhn_pgd_e3e-2_a1e-3.png"></img>
+<p>mobilenet_v3_large pgd eps=0.03 alpha=0.001</p>
+</div>
+</div>
+<div class="w3-col s4 m4 l4">
+<div class="w3-container">
+<span style="display:block">min: -0.0283081</span>
+<span style="display:block">max: 0.0284918</span>
+<span style="display:block">rng: 0.0567999</span>
+<span style="display:block">avg: 0.000323955</span>
+<span style="display:block">var: 0.000438223</span>
+<span style="display:block">L0: 1</span>
+<span style="display:block">L1: 0.0203393</span>
+<span style="display:block">L2: 1.16041</span>
+<span style="display:block">Linf: 0.0284918</span>
+</div>
+</div>
+</div>
+<div class="w3-row" style="display:inline-block">
+<div class="w3-col s8 m8 l8">
+<div class="w3-container w3-center">
+<img class="w3-image" src="img\regnet_y_400mf_imagenet-svhn_pgd_e3e-2_a1e-3.png"></img>
+<p>regnet_y_400mf pgd eps=0.03 alpha=0.001</p>
+</div>
+</div>
+<div class="w3-col s4 m4 l4">
+<div class="w3-container">
+<span style="display:block">min: -0.0283233</span>
+<span style="display:block">max: 0.0280169</span>
+<span style="display:block">rng: 0.0563402</span>
+<span style="display:block">avg: -0.000406958</span>
+<span style="display:block">var: 0.00045692</span>
+<span style="display:block">L0: 1</span>
+<span style="display:block">L1: 0.0208642</span>
+<span style="display:block">L2: 1.18498</span>
+<span style="display:block">Linf: 0.0283233</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+<!-- control -->
 <script>
-function openTable(method) {
-  let x = document.getElementsByClassName("method");
+function openTable(tabpage) {
+  let x = document.getElementsByClassName("tabpage");
   for (let i = 0; i < x.length; i++)
     x[i].style.display = "none";
-  document.getElementById(method).style.display = "block";
+  document.getElementById(tabpage).style.display = "block";
 }
 </script>
 </body>
