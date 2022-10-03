@@ -60,9 +60,9 @@ def test(args):
 
   ''' Test '''
   # Try testing clean accuracy
+  print(f'[Accuracy]')
   if not args.ucp:
     if chk_dataset_compatible(args.train_dataset, args.atk_dataset):
-      print(f'[Accuracy]')
       acc = test_acc(model, dataloader)
       log(stats, f'clean/{args.atk_dataset}', 'clean', acc)
       for mag in [1e-3, 1e-2, 1e-1]:

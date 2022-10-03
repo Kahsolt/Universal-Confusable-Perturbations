@@ -13,9 +13,9 @@ import numpy as np
 from attack import ATK_METHODS
 from util import *
 
-img_dp        = 'img'
-log_dp        = 'log'
-html_fn       = 'index.html'
+img_dp  = 'img'
+log_dp  = 'log'
+html_fn = 'index.html'
 
 # for `gridsearch`
 ALPHA = [ 0.01, 0.005, 0.001, 0.0005 ]
@@ -118,7 +118,7 @@ function openTable(tabpage) {
   mk_card_ex   = lambda fp, title, items: mk_grid(f'{mk_row(mk_card(fp, title), width="s8 m8 l8")}\n{mk_row(mk_info(items), width="s4 m4 l4")}')
 
   # test settings
-  if 'base setting':
+  if 'test settings':
     model         = 'resnet18'
     train_dataset = 'imagenet'
     atk_dataset   = 'svhn'          # ucp genrated on this
@@ -140,7 +140,7 @@ function openTable(tabpage) {
       if tstats is None: return None
       node = tstats
       for seg in path.split('/'):
-        if seg not in tstats:
+        if seg not in node:
           return None
         node = node[seg]
       return node
@@ -151,11 +151,12 @@ function openTable(tabpage) {
     items = [f'{k}: {v:g}' for k, v in stats.items()]
     try:
       items += [
-        '  ',
-        'acc: %% / %%' % (get_dval(f'acc/{ucp_base}/tile/{apply_dataset}'), get_dval(f'acc/{ucp_base}/interpolate/{apply_dataset}')),
-        'pcr: %% / %%' % (get_dval(f'pcr/{ucp_base}/tile/{apply_dataset}'), get_dval(f'pcr/{ucp_base}/interpolate/{apply_dataset}')),
+        '=' * 10,
+        'acc: {:.3%} / {:.3%}'.format(get_dval(f'acc/{ucp_base}/tile/{apply_dataset}/ucp'), get_dval(f'acc/{ucp_base}/interpolate/{apply_dataset}/ucp')),
+        'pcr: {:.3%} / {:.3%}'.format(get_dval(f'pcr/{ucp_base}/tile/{apply_dataset}/ucp'), get_dval(f'pcr/{ucp_base}/interpolate/{apply_dataset}/ucp')),
       ]
     except Exception as e:
+      breakpoint()
       print(f'>> acc/pcr not found for {ucp_base}, ignored test stats')
     return items
   

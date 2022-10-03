@@ -2,9 +2,10 @@
 # Author: Armit
 # Create Time: 2022/09/27 
 
-import logging
 import os
+import logging
 from argparse import ArgumentParser
+from random import shuffle
 
 import torch
 from tensorboardX import SummaryWriter
@@ -15,11 +16,22 @@ from model import *
 from data import *
 from util import *
 
-# NOTE: perfcount
-#   .to(device)   7s
-#   forward       0.4s
-#   backward      0.27s
-#   atk()         ~20s
+MODELS = [
+  'resnet18',
+  'resnet34',
+  'resnet50',
+  'resnext50_32x4d',
+  'wide_resnet50_2',
+  'densenet121',
+  'efficientnet_v2_s',
+  'shufflenet_v2_x1_5',
+  'squeezenet1_1',
+#  'inception_v3',
+  'mobilenet_v3_large',
+  'regnet_y_400mf',
+#  'vit_b_16',
+#  'swin_t',
+]
 
 
 def attack(args):
@@ -44,14 +56,17 @@ def attack(args):
   dataloader = get_dataloader(args.atk_dataset, args.batch_size, args.data_path, n_worker=args.n_worker)
 
   ''' Model '''
-  model = get_model(args.model, ckpt_fp=args.ckpt_fp).to(device)
-  model.eval()
+  models = []
+  for name in MODELS:
+    model = get_model(name).to(device)
+    model.eval()
+    models.append(model)
 
   ''' Info '''
   logger.info(f'[Attack]')
   logger.info(f'   expriment name      = {ucp_name(args.model, args.train_dataset, args.atk_dataset, args.method, args.eps, args.alpha, args.alpha_to)}')
   logger.info(f'   model               = {args.model}')
-  logger.info(f'     weights ckpt      = {"local trained" if args.load else "torchub pretrained"}')
+  logger.info(f'     weights ckpt      = {"torchub pretrained"}')
   logger.info(f'   train_dataset       = {args.train_dataset}')
   logger.info(f'   atk_dataset         = {args.atk_dataset}')
   logger.info(f'     n_examples        = {len(dataloader.dataset)}')
@@ -76,15 +91,18 @@ def attack(args):
       'alpha_to'   : args.alpha_to,
       'micro_steps': args.micro_steps,
     })
-  atk = NannoMono(model, method=args.method, eps=args.eps, alpha=args.alpha, steps=args.steps_per_batch, **kwargs)
-  with torch.no_grad():
-    X, _ = iter(dataloader).next()
-    B = X.shape[0]
-    x = X[0].unsqueeze(0).to(device)                    # [1, C, H, W]
-    atk.init_ucp(x.shape)                               # random init a pertubation
-    y_hat = model(x)                                    # [1, N_CLASS]
-    Y_tgt = torch.ones_like(y_hat) / y_hat.shape[-1]    # make uniform distribution
-    Y_tgt = Y_tgt.repeat([B, 1])                        # [B, N_CLASS]
+  atks = [ ] 
+  for model in models:
+    atk = NannoMono(model, method=args.method, eps=args.eps, alpha=args.alpha, steps=args.steps_per_batch, **kwargs)
+    with torch.no_grad():
+      X, _ = iter(dataloader).next()
+      B = X.shape[0]
+      x = X[0].unsqueeze(0).to(device)                    # [1, C, H, W]
+      atk.init_ucp(x.shape)                               # random init a pertubation
+      y_hat = model(x)                                    # [1, N_CLASS]
+      Y_tgt = torch.ones_like(y_hat) / y_hat.shape[-1]    # make uniform distribution
+      Y_tgt = Y_tgt.repeat([B, 1])                        # [B, N_CLASS]
+    atks.append(atk)
   
   steps = 0
   losses = ValueWindow()
@@ -93,8 +111,25 @@ def attack(args):
       X = X.to(device)
       X = normalize(X, args.atk_dataset)
       
-      loss, ucp = atk(X, Y_tgt)
-      losses.update(loss)
+      # gather ucp & loss from each attacker
+      shuffle(atks)
+      loss_each, ucp_each = [], []
+      for atk in atks:
+        loss, ucp = atk(X, Y_tgt)
+        loss_each.append(loss)
+        ucp_each.append(ucp)
+
+      # average ucp & loss weighted by loss
+      loss_stack = torch.stack(loss_each)
+      ucp_stack  = torch.stack(ucp_each)
+      weight = F.softmax(loss_stack)
+      avg_loss = (weight * loss_stack).sum(axis=0)   # for stats only, not used for `.backward()`
+      avg_ucp  = (weight[:, None, None, None] * ucp_stack).sum(axis=0)  # 要让loss最大的ucp也尽可能被优化得小
+      losses.update(avg_loss)
+
+      # broadcase new ucp to each attacker (sync)
+      for atk in atks:
+        atk.ucp = avg_ucp.clone()
 
       steps += 1
       if steps > args.steps: break
@@ -122,18 +157,16 @@ def attack(args):
 
 if __name__ == '__main__':
   parser = ArgumentParser()
-  parser.add_argument('-M', '--model', default='resnet18', choices=MODELS, help='victim model with pretrained weight')
   parser.add_argument('-D', '--atk_dataset', default='svhn', choices=DATASETS, help='victim dataset')
-  parser.add_argument('--load', help='path to trained model weights folder, named like <model>_<train_dataset>')
 
   parser.add_argument('--method', default='pgd', choices=ATK_METHODS, help='base attack method')
   parser.add_argument('--eps', type=float, default=0.03, help='attack param eps, total pertubation limit')
   parser.add_argument('--alpha', type=float, default=0.001, help='attack param alpha, stepwise pertubation limit ~= learning rate')
   parser.add_argument('--alpha_to', default=None, help='enable alpha_decay mechanism if set, e.g.: 2e-5')
-  parser.add_argument('--steps', type=int, default=2000, help='attack iteration steps on whole dataset, e.g.: 3000')
+  parser.add_argument('--steps', type=int, default=4000, help='attack iteration steps on whole dataset, e.g.: 3000')
   parser.add_argument('--steps_per_batch', type=int, default=20, help='attack iteration steps on one batch, e.g.: 40')
 
-  parser.add_argument('-B', '--batch_size', type=int, default=128)
+  parser.add_argument('-B', '--batch_size', type=int, default=64)
   parser.add_argument('-J', '--n_worker', type=int, default=0)
   parser.add_argument('--overwrite', action='store_true', help='force retrain and overwrite existing <ucp>.npy')
   parser.add_argument('--data_path', default='data', help='folder path to downloaded dataset')
@@ -151,19 +184,10 @@ if __name__ == '__main__':
     args.alpha_to = float(args.alpha_to)
   args.micro_steps = args.steps * args.steps_per_batch
 
-  if args.load:
-    print('[Ckpt] use local trained weights')
-    try:    args.model, args.train_dataset = args.load.split('_')
-    except: breakpoint()
-    args.log_dn = args.load
-    args.ckpt_fp = os.path.join(args.log_path, args.log_dn, 'model-best.pth')
-    if not os.path.exists(args.ckpt_fp):
-      raise ValueError(f'You have not trained the local model {args.ckpt_fp} yet')
-  else:
-    print('[Ckpt] use pretrained weights from torchvision/torchhub')
-    args.train_dataset = 'imagenet'     # NOTE: currently all `torchvision.models` are pretrained on `imagenet`
-    args.log_dn = load_name(args.model, args.train_dataset)
-    args.ckpt_fp = None
+  print('[Ckpt] use pretrained weights from torchvision/torchhub')
+  args.model = 'multi'
+  args.train_dataset = 'imagenet'     # NOTE: currently all `torchvision.models` are pretrained on `imagenet`
+  args.log_dn = load_name(args.model, args.train_dataset)
 
   ucp_fn = ucp_name(args.model, args.train_dataset, args.atk_dataset, args.method, args.eps, args.alpha, args.alpha_to) + '.npy'
   args.save_fp = os.path.join(args.log_path, args.log_dn, ucp_fn)

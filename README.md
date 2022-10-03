@@ -6,7 +6,7 @@
 
 # CURRENTLY STILL WORKING ON ...
 
-​    As far as I know, the concept of [Universal Adversarial Perturbations](https://arxiv.org/abs/1610.08401) stems from the DeepFool method, which optimizes one **common pertubation** (shaped like a single image, a.k.a. adversarial texture) so that most of images `x` in dataset `X` would be misclassified by the victim model `f` when this pertubation `dx` is added to as a noise signal, i.e. : `∀x∈X. P[f(x + dx) != y] -> 1`. It usually achieves this goal by leading the model to predict **another class** (either intended or not), However, this universal pertubation might still somehow contain information about this certain dataset.  
+​    As far as I know, the concept of [Universal Adversarial Perturbations](https://arxiv.org/abs/1610.08401) stems from the DeepFool method, which optimizes one **common perturbation** (shaped like a single image, a.k.a. adversarial texture) so that most of images `x` in dataset `X` would be misclassified by the victim model `f` when this perturbation `dx` is added to as a noise signal, i.e. : `∀x∈X. P[f(x + dx) != y] -> 1`. It usually achieves this goal by leading the model to predict **another class** (either intended or not), However, this universal perturbation might still somehow contain information about this certain dataset.  
 
 ​    Now we consider of what if we **set the optimizing target to a uniform distribution**. That's to say: `∀x∈X. P[f(x + dx)] ~ U[0, 1]`. Intuitively we are searching for a **Universal Confusable Perturbation (UCP)** such that when added to a benign image, the victim classification model hesitates to make decisions. 
 
@@ -17,7 +17,7 @@
 
 We format our experiment name to indicate the experimental settings like: `<model>_<train_dataset>-<atk_dataset>_<method>` which means using `<model>` pretrained on `<train_dataset>` to search for UCPs on `<atk_dataset>` by `<method>` attack.
 
-Here are currently avaiable choices for each component:
+Here are currently available choices for each component:
 
 ```txt
 model (all availables in `pytorch.models`)
@@ -27,8 +27,7 @@ model (all availables in `pytorch.models`)
   ...
 
 train_dataset
-  imagenet           // currently `pytorch.models` only provides weights for `imagenet`
-  ...                // if you refined on any other dataset by yourself (use `attack.py --load <ckpt.pth>`)
+  imagenet      // currently `pytorch.models` only provides weights for `imagenet`
 
 atk_dataset (available through `pytorch.datasets`)
   mnist              // 28 x 28
@@ -46,87 +45,63 @@ method
 (*): see section "dataset download & preprocess" to download manually
 ```
 
-#### Attack on the same dataset, i.e. : "resnet18_imagenet-imagenet-1k"
+#### run preset experiments
 
-This setting means: use a resnet18 model pretrained on ImageNet to search for UCPs on ImageNet-1k.
+⚪ **attack_resnet18_imagenet-svhn_\*.cmd **
 
+These presets try to generate UCPs on SVHN, then transfer to attack models pretrained on the intact ImageNet.
 
-#### Attack on anthor dataset, i.e. : "resnet18_imagenet-svhn"
+- run `attack_resnet18_imagenet-svhn_gridsearch.cmd` and `attack_resnet18_imagenet-svhn_ablations.cmd` to generated various UCPs under `log/<load_name>/<ucp_name>.npy`
+- run `mk_img.cmd` to turn all `<ucp_name>.npy` to `<ucp_name>.png` , and save to `img` folder
+- run `mk_stats.cmd` to test accuracy (acc) and prediction change rate (pcr) on imagenet-1k under ucp attack 
+- run `mk_index.cmd` to generated a html for comprehensive view
 
-This setting means: use a resnet18 model pretrained on ImageNet but to search for UCPs on SVHN. 
+now you can open `index.html` in your browser, it should look like:
 
-⚪ resnet18_imagenet-svhn_pgd
+![index.png](index.png)
 
-generated UCP picture is like:
+``
 
-| eps \ alpha | 0.01 | 0.005 | 0.003 | 0.001 |
-| :-: | :-: | :-: | :-: |
-| 0.1  |  |  |  |  |
-| 0.05 |  |  |  |  |
-| 0.03 |  |  |  |  |
-| 0.01 |  |  |  |  |
+⚪ **attack_resnet18_imagenet-imagenet-1k.cmd**
 
-prediction change rate (PCR) tests:
+Generates from 1k examples of ImageNet's validation set to attack models pretrained on the intact ImageNet. So far no webpage for this :(
 
-| svhn \ cifar10 | 0.01 | 0.005 | 0.003 | 0.001 |
-| :-: | :-: | :-: | :-: |
-| 0.1  |  |  |  |  |
-| 0.05 |  |  |  |  |
-| 0.03 |  |  |  |  |
-| 0.01 |  |  |  |  |
+Experimental results shows an attack failure: the generated UCP is too flat and lack of texture, hence nearly cannot fool any model... :(
 
-⚪ resnet18_imagenet-svhn_pgdl2
+![img\resnet18_imagenet-imagenet-1k_pgd_e3e-2_a1e-3.png](img\resnet18_imagenet-imagenet-1k_pgd_e3e-2_a1e-3.png)
 
+⚪ **attack_resnet18_imagenet-tiny-imagenet.cmd**
 
-⚪ resnet18_imagenet-svhn_mifgsm
+Generates from Tiny-ImageNet to attack models pretrained on the intact ImageNet. So far no webpage for this :(
+**Note**: Tiny-ImageNet is NOT a subset of ImageNet, it has 200 classes and images are sized 64x64.
 
-
-
-
-#### generate UCP on pretrained models
-
-| Model | Dataset (pretrain on) | Dataset (attack on) |
-| :-: | :-: | :-: |
-| resnet18 | imagenet | svhn          |
-| resnet18 | imagenet | cifar10       |
-| resnet50 | imagenet | cifar10       |
-| resnet50 | imagenet | cifar100      |
-| resnet50 | imagenet | tiny-imagenet |
+#### run a new experiment
 
 ```shell
-# load pretrained resnet18 to generate a UCP on cifar10
-# => generated UCP saves at `log/<model>_<train_dataset>/<model>_<train_dataset>-<atk_dataset>.npy`
-#     e.g. `log/resnet18_imagenet/resnet18_imagenet-cifar10.npy`
-python attack.py -M resnet18 -D cifar10 --steps 3000
-# show the generated UCP
-python show.py log/resnet18_imagenet/resnet18_imagenet_cifar10.npy
+# attack a certain model to generate a UCP
+# => generates 'log/<load_name>/<ucp_name>.npy'
+python attack.py -M resnet50 -D svhn --method pgd --eps 0.03 --alpha 0.001 --alpha_to 2e-5
+# or attack multi models together
+# => generates 'log/multi/<ucp_name>.npy'
+python attack_multi.py -D svhn --method pgd --eps 0.03 --alpha 0.001 --alpha_to 1e-5
+
+# test attack stats (acc/pcr)
+# => updates 'log/stats.pkl'
+python test.py -M resnet50 -D imagenet-1k --ucp log/resnet50_imagenet/resnet50_imagenet-svhn_pgd_e3e-2_a1e-3_to2e-5.npy
+# for more test
+python test.py -M resnet50 -D imagenet-1k --ucp log/resnet50_imagenet/resnet50_imagenet-svhn_pgd_e3e-2_a1e-3_to2e-5.npy --resizer tile --ex
+# or attack other model
+python test.py -M squeezenet1_1 -D imagenet-1k --ucp log/resnet50_imagenet/resnet50_imagenet-svhn_pgd_e3e-2_a1e-3_to2e-5.npy
+
+# show ucp texture, clean pictures & added with ucp
+# => generates 'img/<ucp_name>.png'
+python show.py -M resnet50 -D imagenet-1k --ucp log/resnet50_imagenet/resnet50_imagenet-svhn_pgd_e3e-2_a1e-3_to2e-5.npy
 ```
 
-#### generate UCP on your own models
+#### dataset download
 
-```shell
-# train a capable model
-# => saved at `log/<model>_<train_dataset>`
-python train.py -M resnet18 -D cifar10
-
-# generate a UCP
-# => saved at `log/<model>_<train_dataset>/<model>_<train_dataset>-<atk_dataset>.npy`
-python attack.py --load resnet18_cifar10
-# try attack on another dataset `mnist`
-python attack.py --load resnet18_cifar10 -D mnist
-
-# test 
-python test.py --load resnet18_cifar10
-python test.py -M resnet18 -D mnist --load
-```
-
-#### dataset download & preprocess
-
-- imagenet-1k:
-  - download `clean_resized_images.zip`, unzip all image files under `data\imagenet-1k\val\`
-  - put index file `image_name_to_class_id_and_name.json` under `imagenet-1k`
-- [tiny-imagenet-200](https://tiny-imagenet.herokuapp.com)
-  - download & unzip `tiny-imagenet-200.zip` under `data`
+- 1k samples from ImageNet validation set: [imagenet-1k](https://pan.quark.cn/s/21953f83f874)
+- Tiny-ImageNet: [tiny-imagenet-200](https://tiny-imagenet.herokuapp.com)
 
 ```
 ├── imagenet-1k
@@ -146,7 +121,7 @@ python test.py -M resnet18 -D mnist --load
 #### troubleshoot
 
 Q: It seems that loss is very high, and not decrease.
-A: Don't worry, because Cross-Entropy Loss on a uniform distribution is naturally high, theorical lower bound for a uniform distribution lengthed `1000` like ImageNet is the constant `6.9078`, hence loss `~= 7.1` is ok.
+A: Don't worry, because Cross-Entropy Loss on a uniform distribution is naturally high, theoritical lower bound for a uniform distribution lengthed `1000` like ImageNet is the constant `6.9078`. Empirically, `attack.py` giving loss `~= 7.2` is good, while  `attack_multi.py` would give loss `~= 12.6`. To cheat all models is really mission impossible... :(
 
 
 #### references
@@ -154,7 +129,7 @@ A: Don't worry, because Cross-Entropy Loss on a uniform distribution is naturall
 - Universal adversarial perturbations: [https://arxiv.org/abs/1610.08401](https://arxiv.org/abs/1610.08401)
   - PyTorch implementation: [https://github.com/NetoPedro/Universal-Adversarial-Perturbations-Pytorch][https://github.com/NetoPedro/Universal-Adversarial-Perturbations-Pytorch] 
 - DeepFool: a simple and accurate method to fool deep neural networks: [https://arxiv.org/abs/1511.04599v3](https://arxiv.org/abs/1511.04599v3)
-- TinyImageNet-Benchmarks: [https://github.com/meet-minimalist/TinyImageNet-Benchmarks](https://github.com/meet-minimalist/TinyImageNet-Benchmarks)
+- Tiny-ImageNet-Benchmarks: [https://github.com/meet-minimalist/TinyImageNet-Benchmarks](https://github.com/meet-minimalist/TinyImageNet-Benchmarks)
 
 ----
 
