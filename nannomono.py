@@ -49,6 +49,8 @@ class NannoMono(Attack):
     self._supported_mode = ['targeted']
     self.kwargs = kwargs
 
+    # delayed data preporcess
+    self.normalizer = kwargs.get('normalizer', lambda x: x)
     # alpha scheduler
     self.alpha_sched = ('alpha_decay' in kwargs) and AlphaScheduler(self, kwargs['micro_steps'], kwargs['alpha_from'], kwargs['alpha_to'])
 
@@ -86,7 +88,8 @@ class NannoMono(Attack):
 
     for _ in range(self.steps):
       adv_images.requires_grad = True
-      outputs = self.model(adv_images)
+      adv_images_norm = self.normalizer(adv_images)
+      outputs = self.model(adv_images_norm)
 
       # Calculate loss (targeted)
       #loss = self.kl_loss(F.log_softmax(outputs), labels)
@@ -115,7 +118,8 @@ class NannoMono(Attack):
 
     for _ in range(self.steps):
       adv_images.requires_grad = True
-      outputs = self.model(adv_images)
+      adv_images_norm = self.normalizer(adv_images)
+      outputs = self.model(adv_images_norm)
 
       # Calculate loss
       #loss = self.kl_loss(F.log_softmax(outputs), labels)
@@ -155,7 +159,8 @@ class NannoMono(Attack):
 
     for _ in range(self.steps):
       adv_images.requires_grad = True
-      outputs = self.model(adv_images)
+      adv_images_norm = self.normalizer(adv_images)
+      outputs = self.model(adv_images_norm)
 
       # Calculate loss
       #loss = self.kl_loss(F.log_softmax(outputs), labels)

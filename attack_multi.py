@@ -83,7 +83,9 @@ def attack(args):
   atk_setting = f'{args.atk_dataset}{ucp_suffix(args.method, args.eps, args.alpha, args.alpha_to)}'
 
   ''' Attack '''
-  kwargs = { }
+  kwargs = {
+    'normalizer': lambda x: normalize(x, args.atk_dataset),   # delay normalize to attacker
+  }
   if args.alpha_to is not None:
     kwargs.update({
       'alpha_decay': True,
@@ -109,7 +111,6 @@ def attack(args):
   while steps <= args.steps:
     for X, _ in dataloader:
       X = X.to(device)
-      X = normalize(X, args.atk_dataset)
       
       # gather ucp & loss from each attacker
       shuffle(atks)

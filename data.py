@@ -44,7 +44,7 @@ class TinyImageNet(Dataset):
     self.metadata = metadata
 
   def __len__(self):
-    return len(self.data)
+    return len(self.metadata)
 
   def __getitem__(self, idx):
     fp, tgt = self.metadata[idx]
