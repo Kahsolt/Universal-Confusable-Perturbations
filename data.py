@@ -95,7 +95,7 @@ def normalize(X: torch.Tensor, dataset:str='') -> torch.Tensor:
   if chk_dataset_compatible(dataset, 'imagenet'):
     mean = (0.485, 0.456, 0.406)
     std  = (0.229, 0.224, 0.225)
-    X = TF.normalize(X, mean, std, inplace=True)       # [B, C, H, W]
+    X = TF.normalize(X, mean, std)       # [B, C, H, W]
 
   return X
 

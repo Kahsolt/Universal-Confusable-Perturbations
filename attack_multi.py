@@ -146,8 +146,9 @@ def attack(args):
         sw.add_scalar(f'L1-{atk_setting}', np.abs   (ucp_npy).mean(), steps)
         sw.add_scalar(f'L2-{atk_setting}', np.square(ucp_npy).mean(), steps)
 
-        log_alpha = f'alpha={atk.alpha}' if args.alpha_to else ''
-        logger.info(f'[steps {steps}/{args.steps}] loss={losses.mean} {log_alpha}')
+        _alpha = f'alpha={atk.alpha}' if args.alpha_to else ''
+        logger.info(f'[steps {steps}/{args.steps}] loss={losses.mean} {_alpha}')
+        logger.info(f'   loss_each: {[x.item() for x in loss_each]}')
       
       if steps % args.show_interval == 0:
         sw.add_image(f'{atk_setting}', ucp_norm(ucp_npy, norm=True), steps)

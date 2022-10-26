@@ -69,7 +69,7 @@ def test(args):
         acc = test_acc(model, dataloader, noise=mag)
         log(stats, f'clean/{args.atk_dataset}', f'clean-noise({float_to_str(mag)})', acc)
     else:
-      print('atk_dataset is not compatible is with train_dataset')
+      print('atk_dataset is not compatible with train_dataset')
   
   # Try attacked accuracy
   if args.ucp:
